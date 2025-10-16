@@ -1,0 +1,44 @@
+{
+  "name": "mailstub",
+  "private": false,
+  "version": "1.0.0",
+  "description": "Email testing tool for developers",
+  "author": "Jared Nand",
+  "license": "MIT",
+  "bin": {
+    "mailstub": "./bin/mailstub.js"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel --filter './packages/*' dev",
+    "build": "pnpm --filter './packages/*' build",
+    "prepublishOnly": "pnpm build"
+  },
+  "files": [
+    "bin",
+    "packages/*/dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "email",
+    "testing",
+    "smtp",
+    "development",
+    "mail"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jarednand/mailstub.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jarednand/mailstub/issues"
+  },
+  "homepage": "https://github.com/jarednand/mailstub#readme",
+  "dependencies": {
+    "commander": "^14.0.1",
+    "octavedb": "^1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3"
+  }
+}

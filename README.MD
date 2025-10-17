@@ -87,7 +87,7 @@ mailstub start --db ~/my-project/emails.json --port 3000
 
 - `-d, --db <path>` - Path to database JSON file (default: `~/.mailstub/mailstub-db.json`)
 - `-p, --port <number>` - Port number for the server (default: `8000`)
-- `-v, --version` - Output the version number
+- `-V, --version` - Output the version number
 - `-h, --help` - Display help information
 
 ## Client API

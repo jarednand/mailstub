@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { handle } from '@/utils/controller';
-import { db, makeMessage } from '@/lib/db';
-import { makeDateTime } from 'octavedb';
+import { db, makeMessage, makeDateTime } from '@/lib/db';
 
 const MessagesController = {
   create(req: Request, res: Response) {

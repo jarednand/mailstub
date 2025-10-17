@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { handle } from '@/utils/controller';
-import { db, makeUser } from '@/lib/db';
-import { makeDateTime } from 'octavedb';
+import { db, makeUser, makeDateTime } from '@/lib/db';
 
 const UsersController = {
   create(req: Request, res: Response) {

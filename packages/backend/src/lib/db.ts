@@ -15,6 +15,9 @@ const dbPath = process.env.MAILSTUB_DB_PATH || defaultDbPath;
 
 export const db = createClient<Database>(dbPath);
 
+// Export helpers
+export { makeDateTime } from 'octavedb';
+
 // Custom ID generators with prefixes
 export const makeProjectId = () => `p_${makeId()}`;
 export const makeUserId = () => `u_${makeId()}`;

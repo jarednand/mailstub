@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { handle } from '@/utils/controller';
-import { db, makeProject } from '@/lib/db';
-import { makeDateTime } from 'octavedb';
+import { db, makeProject, makeDateTime } from '@/lib/db';
 
 const ProjectsController = {
   create(req: Request, res: Response) {

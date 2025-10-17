@@ -23,10 +23,12 @@ const UsersMiddleware = {
       .withMessage('Email is required')
       .isEmail()
       .withMessage('Please enter a valid email address')
+      .normalizeEmail() // Add this to normalize email case
       .custom((value, { req }) => {
         const data = db.read();
+        const normalizedEmail = value.toLowerCase();
         const exists = data.users.some(
-          u => u.email === value && u.projectId === req.body.projectId
+          u => u.email.toLowerCase() === normalizedEmail && u.projectId === req.body.projectId
         );
         
         if (exists) {
@@ -55,6 +57,7 @@ const UsersMiddleware = {
       .withMessage('Email is required')
       .isEmail()
       .withMessage('Please enter a valid email address')
+      .normalizeEmail() // Add this to normalize email case
       .custom((value, { req }) => {
         const data = db.read();
         const userId = req.params?.id;
@@ -64,8 +67,11 @@ const UsersMiddleware = {
           throw new Error('User not found');
         }
         
+        const normalizedEmail = value.toLowerCase();
         const exists = data.users.some(
-          u => u.email === value && u.projectId === user.projectId && u.id !== userId
+          u => u.email.toLowerCase() === normalizedEmail && 
+          u.projectId === user.projectId && 
+          u.id !== userId
         );
         
         if (exists) {

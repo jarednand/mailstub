@@ -1,8 +1,10 @@
 import { z } from 'zod';
-import type { User, Project } from '@jarednand/mailstub-types';
+import type { User, Project } from 'mailstub-types';
 
 export const userFormSchema = z.object({
-  email: z.email('Please enter a valid email address'),
+  email: z
+    .email('Please enter a valid email address')
+    .transform(val => val.toLowerCase()), // Normalize email to lowercase
 });
 
 export type UserFormData = z.infer<typeof userFormSchema>;
@@ -14,8 +16,11 @@ export function validateUserUniqueness(
   projectId: Project['id'],
   currentUserId?: string
 ) {
+  const normalizedEmail = email.toLowerCase();
   const emailExists = users.some(
-    u => u.email === email && u.projectId === projectId && u.id !== currentUserId
+    u => u.email.toLowerCase() === normalizedEmail && 
+    u.projectId === projectId && 
+    u.id !== currentUserId
   );
 
   if (emailExists) {

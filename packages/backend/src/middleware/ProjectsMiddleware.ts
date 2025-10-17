@@ -9,10 +9,15 @@ const ProjectsMiddleware = {
       .withMessage('Project name is required')
       .custom((value) => {
         const data = db.read();
-        const exists = data.projects.some(p => p.name === value);
+        const normalizedName = value.toLowerCase();
+        const exists = data.projects.some(
+          p => p.name.trim().toLowerCase() === normalizedName
+        );
+
         if (exists) {
           throw new Error('A project with this name already exists');
         }
+
         return true;
       }),
   ],
@@ -22,9 +27,11 @@ const ProjectsMiddleware = {
       .custom((value) => {
         const data = db.read();
         const exists = data.projects.some(p => p.id === value);
+        
         if (!exists) {
           throw new Error('Project not found');
         }
+
         return true;
       }),
     body('name')
@@ -34,10 +41,15 @@ const ProjectsMiddleware = {
       .custom((value, { req }) => {
         const data = db.read();
         const projectId = req.params?.id;
-        const exists = data.projects.some(p => p.name === value && p.id !== projectId);
+        const normalizedName = value.toLowerCase();
+        const exists = data.projects.some(
+          p => p.name.trim().toLowerCase() === normalizedName && p.id !== projectId
+        );
+
         if (exists) {
           throw new Error('A project with this name already exists');
         }
+
         return true;
       }),
   ],
@@ -47,9 +59,11 @@ const ProjectsMiddleware = {
       .custom((value) => {
         const data = db.read();
         const exists = data.projects.some(p => p.id === value);
+        
         if (!exists) {
           throw new Error('Project not found');
         }
+        
         return true;
       }),
   ],

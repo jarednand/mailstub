@@ -23,8 +23,9 @@ import {
 import { useUsers } from '@/hooks/useUsers';
 import { useAppContext } from '@/hooks/useAppContext';
 import { userFormSchema, validateUserUniqueness, type UserFormData } from '@/schemas/user-schema';
-import type { User } from '@jarednand/mailstub-types';
+import type { User } from 'mailstub-types';
 import { toast } from 'sonner';
+import { isAxiosError } from 'axios';
 
 interface UserFormDialogProps {
   open: boolean;
@@ -80,6 +81,7 @@ export function UserFormDialog({ open, onOpenChange, mode, user }: UserFormDialo
     }
 
     setIsSubmitting(true);
+
     try {
       if (mode === 'create') {
         await createUser({ projectId: selectedProjectId, email: data.email });
@@ -88,10 +90,15 @@ export function UserFormDialog({ open, onOpenChange, mode, user }: UserFormDialo
         await updateUser(user.id, data);
         toast.success('User updated successfully');
       }
+
       onOpenChange(false);
     } catch (error) {
-      console.error('Error saving user:', error);
-      toast.error(`Failed to ${mode === 'create' ? 'create' : 'update'} user`);
+      if (isAxiosError(error) && error.response?.status === 400 && error.response?.data?.errors?.email){
+        form.setError('email', { message: error.response.data.errors.email });
+      } else {
+        console.error('Error saving user:', error);
+        toast.error(`Failed to ${mode === 'create' ? 'create' : 'update'} user`);
+      }
     } finally {
       setIsSubmitting(false);
     }

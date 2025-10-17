@@ -22,8 +22,9 @@ import {
 } from '@/components/ui/form';
 import { useProjects } from '@/hooks/useProjects';
 import { projectFormSchema, validateProjectUniqueness, type ProjectFormData } from '@/schemas/project-schema';
-import type { Project } from '@jarednand/mailstub-types';
+import type { Project } from 'mailstub-types';
 import { toast } from 'sonner';
+import { isAxiosError } from 'axios';
 
 interface ProjectFormDialogProps {
   open: boolean;
@@ -82,10 +83,15 @@ export function ProjectFormDialog({ open, onOpenChange, mode, project }: Project
         await updateProject(project.id, data);
         toast.success('Project updated successfully');
       }
+
       onOpenChange(false);
     } catch (error) {
-      console.error('Error saving project:', error);
-      toast.error(`Failed to ${mode === 'create' ? 'create' : 'update'} project`);
+      if (isAxiosError(error) && error.response?.status === 400 && error.response?.data?.errors?.name){
+        form.setError('name', { message: error.response?.data?.errors?.name })
+      } else {
+        console.error('Error saving project:', error);
+        toast.error(`Failed to ${mode === 'create' ? 'create' : 'update'} project`);
+      }
     } finally {
       setIsSubmitting(false);
     }

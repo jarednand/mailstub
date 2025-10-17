@@ -10,9 +10,11 @@ const MessagesMiddleware = {
       .custom((value) => {
         const data = db.read();
         const exists = data.projects.some(p => p.id === value);
+        
         if (!exists) {
           throw new Error('Project not found');
         }
+        
         return true;
       }),
     body('sender')
@@ -31,9 +33,11 @@ const MessagesMiddleware = {
         const data = db.read();
         const projectId = req.body.projectId;
         const user = data.users.find(u => u.email === value && u.projectId === projectId);
+        
         if (!user) {
           throw new Error('Receiver must be a valid user in this project');
         }
+        
         return true;
       }),
     body('subject')
@@ -51,9 +55,11 @@ const MessagesMiddleware = {
       .custom((value) => {
         const data = db.read();
         const exists = data.messages.some(m => m.id === value);
+        
         if (!exists) {
           throw new Error('Message not found');
         }
+        
         return true;
       }),
     body('read')
@@ -66,9 +72,11 @@ const MessagesMiddleware = {
       .custom((value) => {
         const data = db.read();
         const exists = data.messages.some(m => m.id === value);
+        
         if (!exists) {
           throw new Error('Message not found');
         }
+        
         return true;
       }),
   ],
@@ -82,9 +90,11 @@ const MessagesMiddleware = {
         const allExist = value.every((id: string) => 
           data.messages.some(m => m.id === id)
         );
+        
         if (!allExist) {
           throw new Error('One or more messages not found');
         }
+        
         return true;
       }),
   ],
@@ -97,9 +107,11 @@ const MessagesMiddleware = {
       .custom((value) => {
         const data = db.read();
         const exists = data.users.some(u => u.id === value);
+        
         if (!exists) {
           throw new Error('User not found');
         }
+        
         return true;
       }),
   ],

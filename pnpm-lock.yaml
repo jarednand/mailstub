@@ -31,7 +31,7 @@ importers:
         specifier: ^13.0.0
         version: 13.0.0
     devDependencies:
-      '@jarednand/mailstub-types':
+      'mailstub-types':
         specifier: workspace:*
         version: link:../types
       '@types/express':
@@ -116,7 +116,7 @@ importers:
       '@eslint/js':
         specifier: ^9.36.0
         version: 9.37.0
-      '@jarednand/mailstub-types':
+      'mailstub-types':
         specifier: workspace:*
         version: link:../types
       '@types/node':

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { Project } from '@jarednand/mailstub-types';
+import type { Project } from 'mailstub-types';
 
 export const projectFormSchema = z.object({
   name: z.string().min(1, 'Project name is required'),
@@ -15,9 +15,11 @@ export function validateProjectUniqueness(
 ) {
   const errors: { name?: string } = {};
 
+  const normalizedName = data.name.trim().toLowerCase();
   const nameExists = projects.some(
-    p => p.name === data.name && p.id !== currentProjectId
+    p => p.name.trim().toLowerCase() === normalizedName && p.id !== currentProjectId
   );
+  
   if (nameExists) {
     errors.name = 'A project with this name already exists';
   }

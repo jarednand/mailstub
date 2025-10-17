@@ -1,6 +1,6 @@
 import { memo, useCallback } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
-import type { Message } from '@jarednand/mailstub-types';
+import type { Message } from 'mailstub-types';
 
 interface MessageListItemProps {
   message: Message;

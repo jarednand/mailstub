@@ -1,5 +1,5 @@
 import { createClient, makeId, makeDateTime } from "octavedb";
-import { Project, User, Message } from '@jarednand/mailstub-types';
+import { Project, User, Message } from 'mailstub-types';
 import path from 'path';
 import os from 'os';
 

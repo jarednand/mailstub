@@ -9,14 +9,26 @@ interface MessageListItemProps {
   onClick: (messageId: string) => void;
 }
 
+function stripHtml(html: string): string {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  const text = tmp.textContent || tmp.innerText || '';
+  // Clean up whitespace
+  return text.trim().replace(/\s+/g, ' ');
+}
+
 function formatTimestamp(isoDate: string): string {
   const date = new Date(isoDate);
   const now = new Date();
-  const diff = now.getTime() - date.getTime();
-  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / (1000 * 60));
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
   
-  if (hours < 1) return 'Just now';
-  if (hours < 24) return `${hours}h ago`;
+  if (diffMins < 1) return 'Just now';
+  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffHours < 24) return `${diffHours}h ago`;
+  if (diffDays < 7) return `${diffDays}d ago`;
   
   return date.toLocaleDateString();
 }
@@ -54,10 +66,10 @@ export const MessageListItem = memo(function MessageListItem({
         checked={isSelected}
         onCheckedChange={handleSelect}
         onClick={handleCheckboxClick}
-        className="mt-1 border-slate-300 dark:border-slate-600 data-[state=checked]:bg-cyan-600 data-[state=checked]:border-cyan-600"
+        className="mt-1 border-slate-300 dark:border-slate-600 data-[state=checked]:bg-cyan-600 data-[state=checked]:border-cyan-600 flex-shrink-0"
       />
       <div className="flex-1 min-w-0">
-        <div className="flex items-start justify-between mb-1">
+        <div className="flex items-start justify-between mb-1 gap-4">
           <div className="flex-1 min-w-0">
             <p
               className={`text-sm truncate ${
@@ -68,16 +80,16 @@ export const MessageListItem = memo(function MessageListItem({
             >
               {message.subject}
             </p>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">
               {message.sender}
             </p>
           </div>
-          <span className="text-xs text-slate-400 dark:text-slate-500 ml-4 whitespace-nowrap">
+          <span className="text-xs text-slate-400 dark:text-slate-500 whitespace-nowrap flex-shrink-0">
             {formatTimestamp(message.createdAt)}
           </span>
         </div>
         <p className="text-sm text-slate-600 dark:text-slate-400 truncate mt-1">
-          {message.body}
+          {stripHtml(message.body)}
         </p>
       </div>
     </div>

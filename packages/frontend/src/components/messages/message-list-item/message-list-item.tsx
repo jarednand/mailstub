@@ -53,9 +53,9 @@ export const MessageListItem = memo(function MessageListItem({
 
   return (
     <div
-      className={`flex items-start gap-4 p-4 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors ${
+      className={`flex items-start gap-3 sm:gap-4 p-3 sm:p-4 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors ${
         isSelected
-          ? 'bg-cyan-50 dark:bg-cyan-950/30'
+          ? 'bg-cyan-50 dark:bg-cyan-900/40'
           : !message.read
           ? 'bg-cyan-50/30 dark:bg-cyan-950/10'
           : ''
@@ -68,9 +68,9 @@ export const MessageListItem = memo(function MessageListItem({
         onClick={handleCheckboxClick}
         className="mt-1 border-slate-300 dark:border-slate-600 data-[state=checked]:bg-cyan-600 data-[state=checked]:border-cyan-600 flex-shrink-0"
       />
-      <div className="flex-1 min-w-0">
-        <div className="flex items-start justify-between mb-1 gap-4">
-          <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 overflow-hidden">
+        <div className="flex items-start justify-between mb-1 gap-2 sm:gap-4">
+          <div className="flex-1 min-w-0 overflow-hidden">
             <p
               className={`text-sm truncate ${
                 !message.read
@@ -84,7 +84,7 @@ export const MessageListItem = memo(function MessageListItem({
               {message.sender}
             </p>
           </div>
-          <span className="text-xs text-slate-400 dark:text-slate-500 whitespace-nowrap flex-shrink-0">
+          <span className="text-xs text-slate-400 dark:text-slate-500 whitespace-nowrap flex-shrink-0 ml-2">
             {formatTimestamp(message.createdAt)}
           </span>
         </div>

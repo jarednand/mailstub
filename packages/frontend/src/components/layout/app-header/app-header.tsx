@@ -63,19 +63,19 @@ await client.send('${selectedProjectId}', {
               {selectedProjectId && (
                 <>
                   <div className="hidden sm:block h-6 w-px bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
-                  <div className="flex items-center gap-2 min-w-0">
-                    <div className="flex items-center gap-2 bg-cyan-50 dark:bg-cyan-950/50 px-2 sm:px-3 py-1.5 rounded-lg border border-cyan-200 dark:border-cyan-800 min-w-0">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <div className="flex items-center gap-1 bg-cyan-50 dark:bg-cyan-950/50 px-2 sm:px-3 py-1.5 rounded-lg border border-cyan-200 dark:border-cyan-800 min-w-0 overflow-hidden">
                       <code className="text-xs sm:text-sm font-mono text-cyan-700 dark:text-cyan-400 font-medium truncate">
                         {selectedProjectId}
                       </code>
-                      <button
-                        onClick={handleCopyProjectId}
-                        className="text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors flex-shrink-0"
-                        title="Copy project ID"
-                      >
-                        {copiedId ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                      </button>
                     </div>
+                    <button
+                      onClick={handleCopyProjectId}
+                      className="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400 transition-colors flex-shrink-0"
+                      title="Copy project ID"
+                    >
+                      {copiedId ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                    </button>
                     <button
                       onClick={() => setHelpDialogOpen(true)}
                       className="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400 transition-colors flex-shrink-0"

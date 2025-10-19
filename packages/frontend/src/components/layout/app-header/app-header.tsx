@@ -59,7 +59,7 @@ export function AppHeader({ searchQuery, onSearchChange }: AppHeaderProps) {
                 placeholder="Search messages..."
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="text-sm pl-9 w-40 md:w-52 lg:w-64 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus-visible:ring-cyan-500"
+                className="pl-9 w-40 md:w-52 lg:w-64 text-sm border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus-visible:ring-cyan-500"
               />
             </div>
             <Button
@@ -89,7 +89,7 @@ export function AppHeader({ searchQuery, onSearchChange }: AppHeaderProps) {
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
               autoFocus
-              className="text-sm pl-9 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus-visible:ring-cyan-500"
+              className="pl-9 text-sm border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus-visible:ring-cyan-500"
             />
           </div>
           <Button

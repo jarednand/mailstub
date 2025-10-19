@@ -7,6 +7,7 @@ import { useAppContext } from '@/hooks/useAppContext';
 
 export function App() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { theme, projects, isLoadingProjects } = useAppContext();
 
   // Apply theme to document root for Tailwind dark mode
@@ -32,8 +33,11 @@ export function App() {
     <div className="h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
       <AppHeader searchQuery={searchQuery} onSearchChange={setSearchQuery} />
       
-      <div className="flex-1 flex overflow-hidden">
-        <Sidebar />
+      <div className="flex-1 flex overflow-hidden relative">
+        <Sidebar 
+          isCollapsed={sidebarCollapsed} 
+          onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} 
+        />
         <MainContent searchQuery={searchQuery} />
       </div>
     </div>

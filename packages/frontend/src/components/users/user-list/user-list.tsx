@@ -63,8 +63,8 @@ export function UserList() {
 
   return (
     <>
-      <div className="flex-1 overflow-y-auto">
-        <div className="p-4 border-b border-slate-200 dark:border-slate-800">
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex-shrink-0">
           <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3 block">
             Users
           </span>
@@ -78,17 +78,19 @@ export function UserList() {
           </Button>
         </div>
 
-        <div className="divide-y divide-slate-100 dark:divide-slate-800">
-          {projectUsers.map(user => (
-            <UserListItem
-              key={user.id}
-              user={user}
-              unreadCount={unreadCountsByUser[user.id] || 0}
-              isSelected={selectedUserId === user.id}
-              onEdit={handleEditUser}
-              onDelete={handleDeleteUser}
-            />
-          ))}
+        <div className="flex-1 overflow-y-auto">
+          <div className="divide-y divide-slate-100 dark:divide-slate-800">
+            {projectUsers.map(user => (
+              <UserListItem
+                key={user.id}
+                user={user}
+                unreadCount={unreadCountsByUser[user.id] || 0}
+                isSelected={selectedUserId === user.id}
+                onEdit={handleEditUser}
+                onDelete={handleDeleteUser}
+              />
+            ))}
+          </div>
         </div>
       </div>
 

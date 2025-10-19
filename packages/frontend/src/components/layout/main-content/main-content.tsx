@@ -10,7 +10,7 @@ export function MainContent({ searchQuery }: MainContentProps) {
   const { selectedMessageId } = useAppContext();
 
   return (
-    <div className="flex-1 flex flex-col bg-white dark:bg-slate-900">
+    <div className="flex-1 flex flex-col bg-white dark:bg-slate-900 min-w-0 overflow-hidden">
       {selectedMessageId ? (
         <MessageDetailView />
       ) : (

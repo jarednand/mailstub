@@ -61,7 +61,7 @@ export function MessageDetailView() {
           </Button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-8 bg-slate-50 dark:bg-slate-950">
+        <div className="overflow-y-scroll p-8 bg-slate-50 dark:bg-slate-950 h-[calc(100vh-128px)]">
           <div className="max-w-3xl min-w-[500px] mx-auto bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-8">
             <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-6">
               {selectedMessage.subject}

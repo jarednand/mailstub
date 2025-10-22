@@ -208,7 +208,7 @@ describe('MessageDetailView', () => {
     it('handles delete guard when selectedMessageId becomes null', async () => {
       const user = userEvent.setup();
       let selectedId: string | null = 'm_123';
-      const mockDeleteMessage = vi.fn(async (id: string) => {
+      const mockDeleteMessage = vi.fn(async () => {
         // Simulate the ID being cleared before the actual delete happens
         if (selectedId === null) {
           return;

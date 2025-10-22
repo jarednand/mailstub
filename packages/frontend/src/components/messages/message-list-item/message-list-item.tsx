@@ -53,6 +53,7 @@ export const MessageListItem = memo(function MessageListItem({
 
   return (
     <div
+      data-testid="message-list-item"
       className={`flex items-start gap-3 sm:gap-4 p-3 sm:p-4 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors ${
         isSelected
           ? 'bg-cyan-50 dark:bg-cyan-900/40'
@@ -63,6 +64,7 @@ export const MessageListItem = memo(function MessageListItem({
       onClick={handleClick}
     >
       <Checkbox
+        data-testid="message-checkbox"
         checked={isSelected}
         onCheckedChange={handleSelect}
         onClick={handleCheckboxClick}
@@ -72,6 +74,7 @@ export const MessageListItem = memo(function MessageListItem({
         <div className="flex items-start justify-between mb-1 gap-2 sm:gap-4">
           <div className="flex-1 min-w-0 overflow-hidden">
             <p
+              data-testid="message-subject"
               className={`text-sm truncate ${
                 !message.read
                   ? 'font-semibold text-slate-900 dark:text-slate-100'
@@ -80,15 +83,24 @@ export const MessageListItem = memo(function MessageListItem({
             >
               {message.subject}
             </p>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">
+            <p 
+              data-testid="message-sender"
+              className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate"
+            >
               {message.sender}
             </p>
           </div>
-          <span className="text-xs text-slate-400 dark:text-slate-500 whitespace-nowrap flex-shrink-0 ml-2">
+          <span 
+            data-testid="message-timestamp"
+            className="text-xs text-slate-400 dark:text-slate-500 whitespace-nowrap flex-shrink-0 ml-2"
+          >
             {formatTimestamp(message.createdAt)}
           </span>
         </div>
-        <p className="text-sm text-slate-600 dark:text-slate-400 truncate mt-1">
+        <p 
+          data-testid="message-body"
+          className="text-sm text-slate-600 dark:text-slate-400 truncate mt-1"
+        >
           {stripHtml(message.body)}
         </p>
       </div>

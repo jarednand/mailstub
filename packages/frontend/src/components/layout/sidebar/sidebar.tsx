@@ -84,6 +84,7 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
         {/* Collapse button - visible when sidebar is open */}
         {!isCollapsed && (
           <Button
+            data-testid="sidebar-collapse-button"
             variant="ghost"
             size="icon"
             onClick={onToggle}
@@ -96,6 +97,7 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
         {/* Expand button - visible when sidebar is collapsed */}
         {isCollapsed && (
           <Button
+            data-testid="sidebar-expand-button"
             variant="ghost"
             size="icon"
             onClick={onToggle}

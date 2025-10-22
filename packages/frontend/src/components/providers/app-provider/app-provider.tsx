@@ -41,7 +41,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setSelectedProjectId(response.data.projects[0].id);
       }
     } catch(error){
-      console.log(error);
       toast.error('Error loading projects.');
     } finally {
       setIsLoadingProjects(false);
@@ -60,7 +59,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setSelectedUserId(response.data.users[0].id);
       }
     } catch (error){
-      console.log(error);
       toast.error('Error loading users.');
     } finally {
       setIsLoadingUsers(false);
@@ -75,7 +73,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       
       setMessages(response.data.messages);
     } catch (error){
-      console.log(error);
       toast.error('Error loading messages.');
     } finally {
       setIsLoadingMessages(false);

@@ -96,7 +96,6 @@ export function UserFormDialog({ open, onOpenChange, mode, user }: UserFormDialo
       if (isAxiosError(error) && error.response?.status === 400 && error.response?.data?.errors?.email){
         form.setError('email', { message: error.response.data.errors.email });
       } else {
-        console.error('Error saving user:', error);
         toast.error(`Failed to ${mode === 'create' ? 'create' : 'update'} user`);
       }
     } finally {
@@ -130,6 +129,7 @@ export function UserFormDialog({ open, onOpenChange, mode, user }: UserFormDialo
                   </FormLabel>
                   <FormControl>
                     <Input
+                      data-testid="user-email-input"
                       type="email"
                       placeholder="user@example.com"
                       className="border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus-visible:ring-cyan-500"
@@ -143,6 +143,7 @@ export function UserFormDialog({ open, onOpenChange, mode, user }: UserFormDialo
 
             <DialogFooter>
               <Button
+                data-testid="cancel-button"
                 type="button"
                 variant="outline"
                 onClick={() => onOpenChange(false)}
@@ -152,6 +153,7 @@ export function UserFormDialog({ open, onOpenChange, mode, user }: UserFormDialo
                 Cancel
               </Button>
               <Button
+                data-testid="submit-button"
                 type="submit"
                 disabled={isSubmitting}
                 className="bg-cyan-600 hover:bg-cyan-700 text-white shadow-sm"

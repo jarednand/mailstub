@@ -86,7 +86,6 @@ export function MessageList({ searchQuery }: MessageListProps) {
       toast.success(`Deleted ${selectedMessages.size} message${selectedMessages.size > 1 ? 's' : ''}`);
       setDeleteDialog(false);
     } catch (error) {
-      console.error('Error deleting messages:', error);
       toast.error('Failed to delete messages');
     } finally {
       setIsDeleting(false);
@@ -102,7 +101,6 @@ export function MessageList({ searchQuery }: MessageListProps) {
         
         setMessages(response.data.messages);
       } catch (error){
-        console.log(error);
         toast.error('Error refreshing messages.');
       } finally {
         setIsLoadingMessages(false);
@@ -124,6 +122,7 @@ export function MessageList({ searchQuery }: MessageListProps) {
               </p>
             </div>
             <Button
+              data-testid="refresh-messages-button"
               variant="ghost"
               size="icon"
               onClick={handleRefresh}
@@ -136,6 +135,7 @@ export function MessageList({ searchQuery }: MessageListProps) {
           </div>
           {selectedMessages.size > 0 && (
             <Button
+              data-testid="delete-selected-button"
               variant="destructive"
               size="sm"
               onClick={() => setDeleteDialog(true)}
@@ -149,7 +149,10 @@ export function MessageList({ searchQuery }: MessageListProps) {
 
         <div className="overflow-y-scroll h-[calc(100vh-128px)]">
           {filteredMessages.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-slate-400 dark:text-slate-500">
+            <div
+              data-testid="empty-state"
+              className="flex flex-col items-center justify-center h-full text-slate-400 dark:text-slate-500"
+            >
               <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
                 <Mail className="w-8 h-8 text-slate-300 dark:text-slate-600" />
               </div>

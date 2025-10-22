@@ -70,6 +70,7 @@ await client.send('${selectedProjectId}', {
                       </code>
                     </div>
                     <button
+                      data-testid="copy-project-id"
                       onClick={handleCopyProjectId}
                       className="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400 transition-colors flex-shrink-0"
                       title="Copy project ID"
@@ -77,6 +78,7 @@ await client.send('${selectedProjectId}', {
                       {copiedId ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                     </button>
                     <button
+                      data-testid="help-button"
                       onClick={() => setHelpDialogOpen(true)}
                       className="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400 transition-colors flex-shrink-0"
                       title="How to use project ID"
@@ -98,6 +100,7 @@ await client.send('${selectedProjectId}', {
                 />
               </div>
               <Button
+                data-testid="mobile-search-open"
                 variant="ghost"
                 size="icon"
                 onClick={() => setMobileSearchOpen(true)}
@@ -106,6 +109,7 @@ await client.send('${selectedProjectId}', {
                 <Search className="w-5 h-5" />
               </Button>
               <Button
+                data-testid="theme-toggle"
                 variant="ghost"
                 size="icon"
                 onClick={toggleTheme}
@@ -130,6 +134,7 @@ await client.send('${selectedProjectId}', {
             <Button
               variant="ghost"
               size="icon"
+              data-testid="mobile-search-close"
               onClick={() => setMobileSearchOpen(false)}
               className="text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex-shrink-0"
             >
@@ -156,6 +161,7 @@ await client.send('${selectedProjectId}', {
                   Example Usage
                 </h4>
                 <Button
+                  data-testid="copy-code"
                   variant="ghost"
                   size="sm"
                   onClick={handleCopyCode}

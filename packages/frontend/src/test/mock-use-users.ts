@@ -1,0 +1,27 @@
+import { vi } from 'vitest';
+import type { User } from 'mailstub-types';
+import type { CreateUserData, UpdateUserData } from '@/hooks/useUsers';
+import { makeDateTime } from 'octavedb';
+
+export interface UseUsersReturn {
+  users: User[];
+  createUser: (data: CreateUserData) => Promise<User>;
+  updateUser: (userId: User['id'], data: UpdateUserData) => Promise<void>;
+  deleteUser: (userId: User['id']) => Promise<void>;
+}
+
+export const createMockUseUsers = (
+  overrides?: Partial<UseUsersReturn>
+): UseUsersReturn => ({
+  users: [],
+  createUser: vi.fn().mockResolvedValue({
+    id: 'u_new',
+    projectId: 'p_default',
+    email: 'newuser@example.com',
+    createdAt: makeDateTime(),
+    updatedAt: makeDateTime(),
+  }),
+  updateUser: vi.fn().mockResolvedValue(undefined),
+  deleteUser: vi.fn().mockResolvedValue(undefined),
+  ...overrides,
+});

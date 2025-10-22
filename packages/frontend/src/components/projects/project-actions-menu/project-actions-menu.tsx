@@ -48,6 +48,7 @@ export function ProjectActionsMenu({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
+          data-testid="project-actions-menu-trigger"
           variant="ghost"
           size="icon"
           className="h-7 w-7 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
@@ -60,6 +61,7 @@ export function ProjectActionsMenu({
         className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
       >
         <DropdownMenuItem
+          data-testid="create-project-menu-item"
           onSelect={handleCreate}
           className="text-slate-700 dark:text-slate-200 focus:bg-slate-100 dark:focus:bg-slate-700 focus:text-slate-900 dark:focus:text-slate-100"
         >
@@ -68,6 +70,7 @@ export function ProjectActionsMenu({
         </DropdownMenuItem>
         <DropdownMenuSeparator className="bg-slate-200 dark:bg-slate-700" />
         <DropdownMenuItem
+          data-testid="edit-project-menu-item"
           onSelect={handleEdit}
           className="text-slate-700 dark:text-slate-200 focus:bg-slate-100 dark:focus:bg-slate-700 focus:text-slate-900 dark:focus:text-slate-100"
         >
@@ -75,6 +78,7 @@ export function ProjectActionsMenu({
           Edit Project
         </DropdownMenuItem>
         <DropdownMenuItem
+          data-testid="delete-project-menu-item"
           onSelect={handleDelete}
           className="text-red-600 dark:text-red-400 focus:bg-red-50 dark:focus:bg-red-950/50 focus:text-red-700 dark:focus:text-red-300"
         >

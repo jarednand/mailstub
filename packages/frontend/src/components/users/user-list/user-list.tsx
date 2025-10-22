@@ -29,11 +29,13 @@ export function UserList() {
 
   const unreadCountsByUser = useMemo(() => {
     const counts: Record<string, number> = {};
+
     messages.forEach(message => {
       if (!message.read) {
         counts[message.userId] = (counts[message.userId] || 0) + 1;
       }
     });
+    
     return counts;
   }, [messages]);
 
@@ -49,12 +51,12 @@ export function UserList() {
     if (!deleteDialog.userId) return;
 
     setIsDeleting(true);
+
     try {
       await deleteUser(deleteDialog.userId);
       toast.success('User deleted successfully');
       setDeleteDialog({ open: false });
     } catch (error) {
-      console.error('Error deleting user:', error);
       toast.error('Failed to delete user');
     } finally {
       setIsDeleting(false);
@@ -69,6 +71,7 @@ export function UserList() {
             Users
           </span>
           <Button
+            data-testid="add-user-button"
             size="sm"
             onClick={() => setUserDialog({ open: true, mode: 'create' })}
             className="w-full h-9 gap-2 bg-cyan-600 hover:bg-cyan-700 text-white shadow-sm shadow-cyan-600/20"

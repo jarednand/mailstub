@@ -39,6 +39,7 @@ export function DeleteConfirmationDialog({
         </DialogHeader>
         <DialogFooter>
           <Button
+            data-testid="cancel-delete-button"
             variant="outline"
             onClick={() => onOpenChange(false)}
             disabled={isDeleting}
@@ -47,6 +48,7 @@ export function DeleteConfirmationDialog({
             Cancel
           </Button>
           <Button
+            data-testid="confirm-delete-button"
             variant="destructive"
             onClick={onConfirm}
             disabled={isDeleting}

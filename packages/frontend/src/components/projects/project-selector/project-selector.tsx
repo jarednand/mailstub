@@ -7,6 +7,7 @@ export function ProjectSelector() {
   return (
     <div className="relative">
       <select
+        data-testid="project-selector"
         value={selectedProjectId || ''}
         onChange={(e) => setSelectedProjectId(e.target.value)}
         disabled={isLoadingProjects}

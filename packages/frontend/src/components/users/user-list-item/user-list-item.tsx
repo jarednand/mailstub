@@ -43,6 +43,7 @@ export const UserListItem = memo(function UserListItem({
 
   return (
     <div
+      data-testid="user-list-item"
       className={`p-3 cursor-pointer transition-all group ${
         isSelected
           ? 'bg-cyan-50 dark:bg-cyan-950/30'
@@ -52,6 +53,7 @@ export const UserListItem = memo(function UserListItem({
     >
       <div className="flex items-center justify-between mb-1">
         <span
+          data-testid="user-email"
           className={`text-sm font-medium truncate flex-1 ${
             isSelected ? 'text-cyan-900 dark:text-cyan-100' : 'text-slate-700 dark:text-slate-300'
           }`}
@@ -59,13 +61,17 @@ export const UserListItem = memo(function UserListItem({
           {user.email}
         </span>
         {unreadCount > 0 && (
-          <span className="bg-cyan-600 text-white text-xs rounded-full px-2 py-0.5 ml-2 font-medium shadow-sm">
+          <span 
+            data-testid="unread-count"
+            className="bg-cyan-600 text-white text-xs rounded-full px-2 py-0.5 ml-2 font-medium shadow-sm"
+          >
             {unreadCount}
           </span>
         )}
       </div>
       <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
         <Button
+          data-testid="edit-user-button"
           variant="ghost"
           size="sm"
           className="h-7 text-xs flex-1 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
@@ -75,6 +81,7 @@ export const UserListItem = memo(function UserListItem({
           Edit
         </Button>
         <Button
+          data-testid="delete-user-button"
           variant="ghost"
           size="sm"
           className="h-7 text-xs flex-1 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950"

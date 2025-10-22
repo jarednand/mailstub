@@ -89,7 +89,6 @@ export function ProjectFormDialog({ open, onOpenChange, mode, project }: Project
       if (isAxiosError(error) && error.response?.status === 400 && error.response?.data?.errors?.name){
         form.setError('name', { message: error.response?.data?.errors?.name })
       } else {
-        console.error('Error saving project:', error);
         toast.error(`Failed to ${mode === 'create' ? 'create' : 'update'} project`);
       }
     } finally {
@@ -123,6 +122,7 @@ export function ProjectFormDialog({ open, onOpenChange, mode, project }: Project
                   </FormLabel>
                   <FormControl>
                     <Input
+                      data-testid="project-name-input"
                       placeholder="My Awesome App"
                       className="border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus-visible:ring-cyan-500"
                       {...field}
@@ -135,6 +135,7 @@ export function ProjectFormDialog({ open, onOpenChange, mode, project }: Project
 
             <DialogFooter>
               <Button
+                data-testid="cancel-button"
                 type="button"
                 variant="outline"
                 onClick={() => onOpenChange(false)}
@@ -144,6 +145,7 @@ export function ProjectFormDialog({ open, onOpenChange, mode, project }: Project
                 Cancel
               </Button>
               <Button
+                data-testid="submit-button"
                 type="submit"
                 disabled={isSubmitting}
                 className="bg-cyan-600 hover:bg-cyan-700 text-white shadow-sm"

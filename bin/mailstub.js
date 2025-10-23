@@ -2,13 +2,9 @@
 
 const { Command } = require('commander');
 const path = require('path');
-const fs = require('fs');
 const os = require('os');
 
 const program = new Command();
-
-// Default to user's home directory config folder (cross-platform)
-const defaultDbPath = path.join(os.homedir(), '.mailstub', 'mailstub-db.json');
 
 program
   .name('mailstub')
@@ -19,11 +15,8 @@ program
 program
   .command('start')
   .description('Start the MailStub development server')
-  .option('-d, --db <path>', 'path to database JSON file', defaultDbPath)
   .option('-p, --port <number>', 'port number for the server', '8000')
   .action((options) => {
-    // Resolve the database path
-    const dbPath = path.resolve(options.db);
     const port = parseInt(options.port, 10);
 
     // Validate port
@@ -32,26 +25,8 @@ program
       process.exit(1);
     }
 
-    // Create database directory if it doesn't exist
-    const dbDir = path.dirname(dbPath);
-    if (!fs.existsSync(dbDir)) {
-      console.log(`📁 Creating directory: ${dbDir}`);
-      fs.mkdirSync(dbDir, { recursive: true });
-    }
-
-    // Create database file if it doesn't exist
-    if (!fs.existsSync(dbPath)) {
-      console.log(`📝 Creating database file at: ${dbPath}`);
-      const initialData = {
-        projects: [],
-        users: [],
-        messages: []
-      };
-      fs.writeFileSync(dbPath, JSON.stringify(initialData, null, 2));
-    }
-
     console.log('🚀 Starting MailStub server...');
-    console.log(`📊 Database: ${dbPath}`);
+    console.log(`📊 Database: ${path.join(os.homedir(), '.mailstub', 'mailstub.db')}`);
     console.log(`🌐 Port: ${port}`);
     console.log('');
 
@@ -61,7 +36,7 @@ program
     // Start the server - path is relative to ROOT
     try {
       const { startServer } = require('../packages/backend/dist/server');
-      startServer({ dbPath, port });
+      startServer({ port });
     } catch (error) {
       console.error('❌ Failed to start server:', error.message);
       console.error('');

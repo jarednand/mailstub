@@ -9,5 +9,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc --build"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.44.6"
   }
 }

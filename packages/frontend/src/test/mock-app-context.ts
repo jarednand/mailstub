@@ -1,13 +1,14 @@
 import { vi } from 'vitest';
 import type { AppContextType } from '@/contexts/AppContext';
 import type { Project, User, Message } from 'mailstub-types';
-import { makeDateTime } from 'octavedb';
 
 // Helper to generate mock IDs with proper prefixes
 const generateMockId = (prefix: 'p' | 'u' | 'm'): string => {
   const uuid = crypto.randomUUID();
   return `${prefix}_${uuid}`;
 };
+
+const makeDateTime = () => new Date().toISOString();
 
 export const createMockProject = (overrides?: Partial<Project>): Project => ({
   id: generateMockId('p'),

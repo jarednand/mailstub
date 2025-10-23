@@ -1,5 +1,7 @@
 import { body, param, query } from 'express-validator';
-import { db } from '@/lib/db';
+import { db } from '@/db';
+import { users, projects } from 'mailstub-types';
+import { eq, and, sql } from 'drizzle-orm';
 
 const UsersMiddleware = {
   create: [
@@ -7,11 +9,14 @@ const UsersMiddleware = {
       .trim()
       .notEmpty()
       .withMessage('Project ID is required')
-      .custom((value) => {
-        const data = db.read();
-        const exists = data.projects.some(p => p.id === value);
+      .custom(async (value) => {
+        const project = await db
+          .select()
+          .from(projects)
+          .where(eq(projects.id, value))
+          .limit(1);
         
-        if (!exists) {
+        if (project.length === 0) {
           throw new Error('Project not found');
         }
         
@@ -23,15 +28,23 @@ const UsersMiddleware = {
       .withMessage('Email is required')
       .isEmail()
       .withMessage('Please enter a valid email address')
-      .normalizeEmail() // Add this to normalize email case
-      .custom((value, { req }) => {
-        const data = db.read();
+      .normalizeEmail()
+      .custom(async (value, { req }) => {
         const normalizedEmail = value.toLowerCase();
-        const exists = data.users.some(
-          u => u.email.toLowerCase() === normalizedEmail && u.projectId === req.body.projectId
-        );
+        const projectId = req.body.projectId;
         
-        if (exists) {
+        const existingUser = await db
+          .select()
+          .from(users)
+          .where(
+            and(
+              sql`lower(${users.email}) = ${normalizedEmail}`,
+              eq(users.projectId, projectId)
+            )
+          )
+          .limit(1);
+        
+        if (existingUser.length > 0) {
           throw new Error('A user with this email already exists in this project');
         }
         
@@ -41,11 +54,14 @@ const UsersMiddleware = {
 
   update: [
     param('id')
-      .custom((value) => {
-        const data = db.read();
-        const exists = data.users.some(u => u.id === value);
+      .custom(async (value) => {
+        const user = await db
+          .select()
+          .from(users)
+          .where(eq(users.id, value))
+          .limit(1);
         
-        if (!exists) {
+        if (user.length === 0) {
           throw new Error('User not found');
         }
         
@@ -57,24 +73,38 @@ const UsersMiddleware = {
       .withMessage('Email is required')
       .isEmail()
       .withMessage('Please enter a valid email address')
-      .normalizeEmail() // Add this to normalize email case
-      .custom((value, { req }) => {
-        const data = db.read();
+      .normalizeEmail()
+      .custom(async (value, { req }) => {
         const userId = req.params?.id;
-        const user = data.users.find(u => u.id === userId);
         
-        if (!user) {
+        // Get the user's project
+        const user = await db
+          .select()
+          .from(users)
+          .where(eq(users.id, userId))
+          .limit(1);
+        
+        if (user.length === 0) {
           throw new Error('User not found');
         }
         
         const normalizedEmail = value.toLowerCase();
-        const exists = data.users.some(
-          u => u.email.toLowerCase() === normalizedEmail && 
-          u.projectId === user.projectId && 
-          u.id !== userId
-        );
+        const projectId = user[0].projectId;
         
-        if (exists) {
+        // Check if another user in the same project has this email
+        const existingUser = await db
+          .select()
+          .from(users)
+          .where(
+            and(
+              sql`lower(${users.email}) = ${normalizedEmail}`,
+              eq(users.projectId, projectId),
+              sql`${users.id} != ${userId}`
+            )
+          )
+          .limit(1);
+        
+        if (existingUser.length > 0) {
           throw new Error('A user with this email already exists in this project');
         }
         
@@ -84,11 +114,14 @@ const UsersMiddleware = {
 
   delete: [
     param('id')
-      .custom((value) => {
-        const data = db.read();
-        const exists = data.users.some(u => u.id === value);
+      .custom(async (value) => {
+        const user = await db
+          .select()
+          .from(users)
+          .where(eq(users.id, value))
+          .limit(1);
         
-        if (!exists) {
+        if (user.length === 0) {
           throw new Error('User not found');
         }
         
@@ -101,11 +134,14 @@ const UsersMiddleware = {
       .trim()
       .notEmpty()
       .withMessage('Project ID is required')
-      .custom((value) => {
-        const data = db.read();
-        const exists = data.projects.some(p => p.id === value);
+      .custom(async (value) => {
+        const project = await db
+          .select()
+          .from(projects)
+          .where(eq(projects.id, value))
+          .limit(1);
         
-        if (!exists) {
+        if (project.length === 0) {
           throw new Error('Project not found');
         }
         

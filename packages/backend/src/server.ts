@@ -1,41 +1,35 @@
 import express from 'express';
 import path from 'path';
 import os from 'os';
-import fs from 'fs';
 import ProjectsRouter from '@/routers/ProjectsRouter';
 import UsersRouter from '@/routers/UsersRouter';
 import MessagesRouter from '@/routers/MessagesRouter';
+import { initializeDatabase } from '@/db';
+
+console.log('🔍 Starting server initialization...');
 
 interface ServerOptions {
-  dbPath: string;
   port: number;
 }
 
 export function startServer(options: ServerOptions) {
+  console.log('🔍 startServer called with options:', options);
+  
   const app = express();
   const routePrefix = '/api';
   const NODE_ENV = process.env.NODE_ENV || 'development';
   const APP_NAME = 'MailStub';
 
-  // Create database directory and file if they don't exist
-  const dbDir = path.dirname(options.dbPath);
-  if (!fs.existsSync(dbDir)) {
-    console.log(`📁 Creating directory: ${dbDir}`);
-    fs.mkdirSync(dbDir, { recursive: true });
+  console.log('🔍 About to initialize database...');
+  
+  // Initialize database (creates ~/.mailstub directory and runs migrations)
+  try {
+    initializeDatabase();
+    console.log('🔍 Database initialized successfully');
+  } catch (error) {
+    console.error('🔍 Database initialization failed:', error);
+    throw error;
   }
-
-  if (!fs.existsSync(options.dbPath)) {
-    console.log(`📝 Creating database file at: ${options.dbPath}`);
-    const initialData = {
-      projects: [],
-      users: [],
-      messages: []
-    };
-    fs.writeFileSync(options.dbPath, JSON.stringify(initialData, null, 2));
-  }
-
-  // Set database path for other modules to use
-  process.env.MAILSTUB_DB_PATH = options.dbPath;
 
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
@@ -47,7 +41,7 @@ export function startServer(options: ServerOptions) {
   if (NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../../frontend/dist')));
 
-    app.get('/{*splat}', (_, res) =>
+    app.get('/*', (_, res) =>
       res.sendFile(
         path.resolve(__dirname, '../../', 'frontend', 'dist', 'index.html')
       )
@@ -57,7 +51,7 @@ export function startServer(options: ServerOptions) {
   app.listen(options.port, () => {
     console.log(`✅ ${APP_NAME} server running at http://localhost:${options.port}`);
     console.log(`📧 Open http://localhost:${options.port} to view your emails`);
-    console.log(`📊 Database: ${options.dbPath}`);
+    console.log(`📊 Database: ${path.join(os.homedir(), '.mailstub', 'mailstub.db')}`);
     console.log('');
     console.log('Press Ctrl+C to stop the server');
   });
@@ -65,10 +59,8 @@ export function startServer(options: ServerOptions) {
 
 // For development (npm run dev)
 if (require.main === module) {
-  const defaultDbPath = path.join(os.homedir(), '.mailstub', 'mailstub-db.json');
-  
+  console.log('🔍 Running in development mode');
   startServer({
-    dbPath: process.env.MAILSTUB_DB_PATH || defaultDbPath,
     port: parseInt(process.env.PORT || '3001', 10)
   });
 }

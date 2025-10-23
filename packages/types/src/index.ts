@@ -1,21 +1,10 @@
-import { Resource } from 'octavedb';
+import { InferSelectModel } from 'drizzle-orm';
+import * as schema from './db/schema';
 
-export interface Project extends Resource {
-  name: string;
-}
+// Export the schema
+export * from './db/schema';
 
-export interface User extends Resource {
-  id: string;
-  projectId: Project['id'];
-  email: string;
-}
-
-export interface Message extends Resource {
-  projectId: Project['id'];
-  userId: User['id'];
-  sender: string;
-  receiver: string;
-  subject: string;
-  body: string;
-  read: boolean;
-}
+// Export inferred types (simple version)
+export type Project = InferSelectModel<typeof schema.projects>;
+export type User = InferSelectModel<typeof schema.users>;
+export type Message = InferSelectModel<typeof schema.messages>;

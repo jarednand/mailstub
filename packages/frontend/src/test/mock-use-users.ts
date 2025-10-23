@@ -1,7 +1,6 @@
 import { vi } from 'vitest';
 import type { User } from 'mailstub-types';
 import type { CreateUserData, UpdateUserData } from '@/hooks/useUsers';
-import { makeDateTime } from 'octavedb';
 
 export interface UseUsersReturn {
   users: User[];
@@ -18,8 +17,8 @@ export const createMockUseUsers = (
     id: 'u_new',
     projectId: 'p_default',
     email: 'newuser@example.com',
-    createdAt: makeDateTime(),
-    updatedAt: makeDateTime(),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   }),
   updateUser: vi.fn().mockResolvedValue(undefined),
   deleteUser: vi.fn().mockResolvedValue(undefined),

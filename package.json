@@ -35,8 +35,7 @@
   },
   "homepage": "https://github.com/jarednand/mailstub#readme",
   "dependencies": {
-    "commander": "^14.0.1",
-    "octavedb": "^1.0.0"
+    "commander": "^14.0.1"
   },
   "devDependencies": {
     "typescript": "~5.9.3"

@@ -1,17 +1,24 @@
 import { Request, Response } from 'express';
 import { handle } from '@/utils/controller';
-import { db, makeUser, makeDateTime } from '@/lib/db';
+import { db } from '@/db';
+import { users, messages } from 'mailstub-types';
+import { eq } from 'drizzle-orm';
+import { randomUUID } from 'crypto';
 
 const UsersController = {
   create(req: Request, res: Response) {
     handle(req, res, async () => {
       const { projectId, email } = req.body;
       
-      const data = db.read();
-      const newUser = makeUser({ projectId, email });
+      const newUser = {
+        id: `u_${randomUUID()}`,
+        projectId,
+        email,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
       
-      data.users.push(newUser);
-      db.write(data);
+      await db.insert(users).values(newUser);
       
       return res.status(201).json({ user: newUser });
     });
@@ -21,10 +28,12 @@ const UsersController = {
     handle(req, res, async () => {
       const { projectId } = req.query;
       
-      const data = db.read();
-      const users = data.users.filter(u => u.projectId === projectId);
+      const projectUsers = await db
+        .select()
+        .from(users)
+        .where(eq(users.projectId, projectId as string));
       
-      return res.status(200).json({ users });
+      return res.status(200).json({ users: projectUsers });
     });
   },
 
@@ -33,18 +42,21 @@ const UsersController = {
       const { id } = req.params;
       const { email } = req.body;
       
-      const data = db.read();
-      const userIndex = data.users.findIndex(u => u.id === id);
+      const updatedAt = new Date().toISOString();
       
-      data.users[userIndex] = {
-        ...data.users[userIndex],
-        email,
-        updatedAt: makeDateTime(),
-      };
+      await db
+        .update(users)
+        .set({ email, updatedAt })
+        .where(eq(users.id, id));
       
-      db.write(data);
+      // Fetch the updated user
+      const updatedUser = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, id))
+        .limit(1);
       
-      return res.status(200).json({ user: data.users[userIndex] });
+      return res.status(200).json({ user: updatedUser[0] });
     });
   },
 
@@ -52,15 +64,11 @@ const UsersController = {
     handle(req, res, async () => {
       const { id } = req.params;
       
-      const data = db.read();
+      // Delete associated messages first (foreign key constraint)
+      await db.delete(messages).where(eq(messages.userId, id));
       
-      // Remove user
-      data.users = data.users.filter(u => u.id !== id);
-      
-      // Remove associated messages
-      data.messages = data.messages.filter(m => m.userId !== id);
-      
-      db.write(data);
+      // Delete the user
+      await db.delete(users).where(eq(users.id, id));
       
       return res.status(200).json({ message: 'User deleted successfully' });
     });

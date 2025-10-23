@@ -12,14 +12,18 @@
     "start": "node dist/server.js"
   },
   "devDependencies": {
-    "mailstub-types": "workspace:*",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/express": "^5.0.3",
     "@types/node": "^24.7.0",
+    "drizzle-kit": "^0.31.5",
+    "mailstub-types": "workspace:*",
     "tsc-alias": "^1.8.16",
     "tsx": "^4.20.6",
     "typescript": "~5.9.3"
   },
   "dependencies": {
+    "better-sqlite3": "^12.4.1",
+    "drizzle-orm": "^0.44.6",
     "express": "^5.1.0",
     "express-validator": "^7.2.1",
     "uuid": "^13.0.0"

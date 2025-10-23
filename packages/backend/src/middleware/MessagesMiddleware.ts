@@ -1,5 +1,7 @@
 import { body, param, query } from 'express-validator';
-import { db } from '@/lib/db';
+import { db } from '@/db';
+import { messages, projects, users } from 'mailstub-types';
+import { eq, and, inArray, sql } from 'drizzle-orm';
 
 const MessagesMiddleware = {
   create: [
@@ -7,11 +9,14 @@ const MessagesMiddleware = {
       .trim()
       .notEmpty()
       .withMessage('Project ID is required')
-      .custom((value) => {
-        const data = db.read();
-        const exists = data.projects.some(p => p.id === value);
+      .custom(async (value) => {
+        const project = await db
+          .select()
+          .from(projects)
+          .where(eq(projects.id, value))
+          .limit(1);
         
-        if (!exists) {
+        if (project.length === 0) {
           throw new Error('Project not found');
         }
         
@@ -29,12 +34,21 @@ const MessagesMiddleware = {
       .withMessage('Receiver is required')
       .isEmail()
       .withMessage('Receiver must be a valid email address')
-      .custom((value, { req }) => {
-        const data = db.read();
+      .custom(async (value, { req }) => {
         const projectId = req.body.projectId;
-        const user = data.users.find(u => u.email === value && u.projectId === projectId);
         
-        if (!user) {
+        const user = await db
+          .select()
+          .from(users)
+          .where(
+            and(
+              eq(users.email, value),
+              eq(users.projectId, projectId)
+            )
+          )
+          .limit(1);
+        
+        if (user.length === 0) {
           throw new Error('Receiver must be a valid user in this project');
         }
         
@@ -52,11 +66,14 @@ const MessagesMiddleware = {
 
   update: [
     param('id')
-      .custom((value) => {
-        const data = db.read();
-        const exists = data.messages.some(m => m.id === value);
+      .custom(async (value) => {
+        const message = await db
+          .select()
+          .from(messages)
+          .where(eq(messages.id, value))
+          .limit(1);
         
-        if (!exists) {
+        if (message.length === 0) {
           throw new Error('Message not found');
         }
         
@@ -69,11 +86,14 @@ const MessagesMiddleware = {
 
   delete: [
     param('id')
-      .custom((value) => {
-        const data = db.read();
-        const exists = data.messages.some(m => m.id === value);
+      .custom(async (value) => {
+        const message = await db
+          .select()
+          .from(messages)
+          .where(eq(messages.id, value))
+          .limit(1);
         
-        if (!exists) {
+        if (message.length === 0) {
           throw new Error('Message not found');
         }
         
@@ -85,13 +105,15 @@ const MessagesMiddleware = {
     body('ids')
       .isArray({ min: 1 })
       .withMessage('IDs must be a non-empty array')
-      .custom((value) => {
-        const data = db.read();
-        const allExist = value.every((id: string) => 
-          data.messages.some(m => m.id === id)
-        );
+      .custom(async (value: string[]) => {
+        // Get all messages with the provided IDs
+        const foundMessages = await db
+          .select({ id: messages.id })
+          .from(messages)
+          .where(inArray(messages.id, value));
         
-        if (!allExist) {
+        // Check if all IDs were found
+        if (foundMessages.length !== value.length) {
           throw new Error('One or more messages not found');
         }
         
@@ -104,11 +126,14 @@ const MessagesMiddleware = {
       .trim()
       .notEmpty()
       .withMessage('User ID is required')
-      .custom((value) => {
-        const data = db.read();
-        const exists = data.users.some(u => u.id === value);
+      .custom(async (value) => {
+        const user = await db
+          .select()
+          .from(users)
+          .where(eq(users.id, value))
+          .limit(1);
         
-        if (!exists) {
+        if (user.length === 0) {
           throw new Error('User not found');
         }
         

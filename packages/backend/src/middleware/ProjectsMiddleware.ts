@@ -1,5 +1,7 @@
 import { body, param } from 'express-validator';
-import { db } from '@/lib/db';
+import { db } from '@/db';
+import { projects } from 'mailstub-types';
+import { eq, and, sql } from 'drizzle-orm';
 
 const ProjectsMiddleware = {
   create: [
@@ -7,14 +9,17 @@ const ProjectsMiddleware = {
       .trim()
       .notEmpty()
       .withMessage('Project name is required')
-      .custom((value) => {
-        const data = db.read();
+      .custom(async (value) => {
         const normalizedName = value.toLowerCase();
-        const exists = data.projects.some(
-          p => p.name.trim().toLowerCase() === normalizedName
-        );
+        
+        // Check if project with this name exists (case-insensitive)
+        const existingProject = await db
+          .select()
+          .from(projects)
+          .where(sql`lower(trim(${projects.name})) = ${normalizedName}`)
+          .limit(1);
 
-        if (exists) {
+        if (existingProject.length > 0) {
           throw new Error('A project with this name already exists');
         }
 
@@ -24,11 +29,14 @@ const ProjectsMiddleware = {
 
   update: [
     param('id')
-      .custom((value) => {
-        const data = db.read();
-        const exists = data.projects.some(p => p.id === value);
+      .custom(async (value) => {
+        const project = await db
+          .select()
+          .from(projects)
+          .where(eq(projects.id, value))
+          .limit(1);
         
-        if (!exists) {
+        if (project.length === 0) {
           throw new Error('Project not found');
         }
 
@@ -38,15 +46,23 @@ const ProjectsMiddleware = {
       .trim()
       .notEmpty()
       .withMessage('Project name is required')
-      .custom((value, { req }) => {
-        const data = db.read();
+      .custom(async (value, { req }) => {
         const projectId = req.params?.id;
         const normalizedName = value.toLowerCase();
-        const exists = data.projects.some(
-          p => p.name.trim().toLowerCase() === normalizedName && p.id !== projectId
-        );
+        
+        // Check if another project has this name
+        const existingProject = await db
+          .select()
+          .from(projects)
+          .where(
+            and(
+              sql`lower(trim(${projects.name})) = ${normalizedName}`,
+              sql`${projects.id} != ${projectId}`
+            )
+          )
+          .limit(1);
 
-        if (exists) {
+        if (existingProject.length > 0) {
           throw new Error('A project with this name already exists');
         }
 
@@ -56,11 +72,14 @@ const ProjectsMiddleware = {
 
   delete: [
     param('id')
-      .custom((value) => {
-        const data = db.read();
-        const exists = data.projects.some(p => p.id === value);
+      .custom(async (value) => {
+        const project = await db
+          .select()
+          .from(projects)
+          .where(eq(projects.id, value))
+          .limit(1);
         
-        if (!exists) {
+        if (project.length === 0) {
           throw new Error('Project not found');
         }
         

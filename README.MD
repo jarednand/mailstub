@@ -8,7 +8,7 @@ A lightweight email testing tool for developers. Catch and view test emails in a
 - 👥 **Multiple Users** - Create test users and send to different recipients
 - 🎨 **Clean Interface** - Beautiful UI with dark mode support
 - 🚀 **Simple Setup** - Start testing emails in minutes
-- 💾 **Local Storage** - All data stored locally on your machine
+- 💾 **Local Storage** - All data stored locally in SQLite
 - 🔌 **Easy Integration** - Simple client library for sending test emails
 
 ## Installation
@@ -52,6 +52,16 @@ Open your browser to `http://localhost:8000` and:
 npm install mailstub-client
 ```
 
+Or using your preferred package manager:
+
+```bash
+# pnpm
+pnpm add mailstub-client
+
+# yarn
+yarn add mailstub-client
+```
+
 ### 4. Send test emails from your app
 
 ```typescript
@@ -71,21 +81,14 @@ Check the MailStub UI to see your test email!
 
 ```bash
 # Start with default settings
-mailstub
-
-# Specify a custom database path
-mailstub start --db ./my-emails.json
+mailstub start
 
 # Use a custom port
 mailstub start --port 3000
-
-# Combine options
-mailstub start --db ~/my-project/emails.json --port 3000
 ```
 
 ### Available Options
 
-- `-d, --db <path>` - Path to database JSON file (default: `~/.mailstub/mailstub-db.json`)
 - `-p, --port <number>` - Port number for the server (default: `8000`)
 - `-V, --version` - Output the version number
 - `-h, --help` - Display help information
@@ -122,14 +125,15 @@ const result = await client.send('p_abc123', {
 console.log(result.message.id); // m_xyz789
 ```
 
-### Custom Server URL
+### Custom Server Port
 
-By default, the client connects to `http://localhost:8000`. To use a different server URL:
+By default, the client connects to `http://localhost:8000`. If you're running MailStub on a different port, update the client configuration:
 
 ```typescript
 import { createClient } from 'mailstub-client';
 
-const client = createClient({ baseURL: 'http://localhost:3000' });
+// Connect to MailStub running on port 3000
+const client = createClient({ port: 3000 });
 
 await client.send('p_abc123', {
   sender: 'support@myapp.com',
@@ -161,14 +165,19 @@ await client.send('p_abc123', {
 
 ## Data Storage
 
-MailStub stores test emails in `~/.mailstub/mailstub-db.json` by default. This file:
+MailStub stores all data in a SQLite database in your home directory:
 
-- Is stored in your home directory
+- **Mac/Linux:** `~/.mailstub/mailstub.db`
+- **Windows:** `C:\Users\<YourUsername>\.mailstub\mailstub.db`
+
+This database:
+
 - Contains only test email data
+- Uses SQLite for efficient querying and storage
+- Is created automatically on first run
 - Is unencrypted (never store sensitive information)
-- Can be customized with the `--db` flag
 
-**Security Note:** The database file should only contain test data. Never use MailStub for production emails or sensitive information.
+**Security Note:** The database should only contain test data. Never use MailStub for production emails or sensitive information.
 
 ## Troubleshooting
 
@@ -180,9 +189,9 @@ If port 8000 is already in use, specify a different port:
 mailstub start --port 3000
 ```
 
-### Cannot find database file
+### Database location
 
-If you specify a custom database path, ensure the directory exists or MailStub will create it automatically.
+Your database is automatically stored in your home directory (see [Data Storage](#data-storage) section for the exact path). To view or backup your data, you can use any SQLite browser tool.
 
 ### Frontend not loading
 

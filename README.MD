@@ -161,7 +161,7 @@ await client.send('p_abc123', {
 - Compliance-regulated communications
 - High-volume or mission-critical sends
 
-**Disclaimer:** MailStub is designed exclusively for testing purposes. It does not provide delivery guarantees, encryption, or compliance features. Use a proper transactional email service (like SendGrid, Postmark, or AWS SES) for production environments.
+**Disclaimer:** MailStub is designed exclusively for testing purposes. It does not send real emails or provide delivery guarantees, encryption, or compliance features. For production environments, use a proper transactional email service like SendGrid, Postmark, or AWS SES.
 
 ## Data Storage
 

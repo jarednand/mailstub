@@ -11,7 +11,9 @@
   "scripts": {
     "dev": "pnpm --parallel --filter './packages/*' dev",
     "build": "pnpm --filter './packages/*' build",
-    "prepublishOnly": "pnpm build"
+    "test": "pnpm --filter './packages/*' test:run",
+    "test:watch": "pnpm --parallel --filter './packages/*' test:watch",
+    "prepublishOnly": "pnpm test && pnpm build"
   },
   "files": [
     "bin",

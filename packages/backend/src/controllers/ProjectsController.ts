@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { handle } from '@/utils/controller';
 import { db } from '@/db';
 import { projects, users, messages } from 'mailstub-types';
-import { eq, sql } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { randomUUID } from 'crypto';
 
 const ProjectsController = {

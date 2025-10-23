@@ -1,7 +1,7 @@
 import { body, param, query } from 'express-validator';
 import { db } from '@/db';
 import { messages, projects, users } from 'mailstub-types';
-import { eq, and, inArray, sql } from 'drizzle-orm';
+import { eq, and, inArray } from 'drizzle-orm';
 
 const MessagesMiddleware = {
   create: [

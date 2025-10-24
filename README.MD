@@ -77,6 +77,42 @@ await client.send('p_your-project-id', {
 
 Check the MailStub UI to see your test email!
 
+## Development vs Production
+
+Create an abstraction layer to easily switch between MailStub for development and real email services for production:
+
+```typescript
+import { client as mailstubClient } from 'mailstub-client';
+import sendgrid from '@sendgrid/mail';
+
+sendgrid.setApiKey(process.env.SENDGRID_API_KEY || '');
+
+export async function sendEmail({ to, from, subject, html }) {
+  if (process.env.NODE_ENV === 'production') {
+    // Production: Use real email service
+    await sendgrid.send({ to, from, subject, html });
+  } else {
+    // Development: Catch emails in MailStub
+    await mailstubClient.send(process.env.MAILSTUB_PROJECT_ID!, {
+      sender: from,
+      receiver: to,
+      subject,
+      body: html
+    });
+  }
+}
+
+// Usage anywhere in your app:
+await sendEmail({
+  to: 'user@example.com',
+  from: 'noreply@myapp.com',
+  subject: 'Welcome!',
+  html: '<h1>Welcome to our app!</h1>'
+});
+```
+
+This pattern keeps your code clean and makes it easy to switch between testing and production environments.
+
 ## CLI Options
 
 ```bash

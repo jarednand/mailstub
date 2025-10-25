@@ -1,7 +1,7 @@
 {
   "name": "mailstub",
   "private": false,
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Email testing tool for developers",
   "author": "Jared Nand",
   "license": "MIT",

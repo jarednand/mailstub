@@ -1,7 +1,7 @@
 {
   "name": "mailstub-backend",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "dist/server.js",
   "description": "Backend for MailStub",
   "author": "Jared Nand",

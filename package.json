@@ -1,6 +1,5 @@
 {
   "name": "mailstub",
-  "private": false,
   "version": "0.1.0",
   "description": "Email testing tool for developers",
   "author": "Jared Nand",
@@ -11,13 +10,15 @@
   "scripts": {
     "dev:frontend": "vite --config vite.config.ts",
     "dev:backend": "tsx --tsconfig tsconfig.backend.json -r tsconfig-paths/register src/backend/server.ts",
-    "dev": "pnpm run dev:frontend & pnpm run dev:backend",
+    "dev": "pnpm dev:frontend & pnpm dev:backend",
     "build:frontend": "vite build",
     "build:backend": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
-    "build": "pnpm run build:frontend && pnpm run build:backend",
+    "build": "pnpm build:frontend && pnpm build:backend",
     "test": "vitest run",
+    "test:run": "vitest run",
     "test:frontend": "vitest run --project frontend",
-    "test:backend": "vitest run --project backend"
+    "test:backend": "vitest run --project backend",
+    "prepublishOnly": "pnpm test:run && pnpm build"
   },
   "files": [
     "bin",

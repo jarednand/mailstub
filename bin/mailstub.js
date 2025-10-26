@@ -35,7 +35,7 @@ program
 
     // Start the server - path is relative to ROOT
     try {
-      const { startServer } = require('../packages/backend/dist/server');
+      const { startServer } = require('../dist/backend/server');
       startServer({ port });
     } catch (error) {
       console.error('❌ Failed to start server:', error.message);

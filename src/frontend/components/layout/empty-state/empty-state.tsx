@@ -6,6 +6,7 @@ import { useAppContext } from '@/hooks/useAppContext';
 
 export function EmptyState() {
   const [projectDialog, setProjectDialog] = useState(false);
+  const [packageManager, setPackageManager] = useState<'npm' | 'pnpm' | 'yarn'>('npm');
   const { theme, toggleTheme } = useAppContext();
 
   return (
@@ -103,11 +104,50 @@ export function EmptyState() {
                   <p className="text-sm text-slate-600 dark:text-slate-400 ml-11 mb-3">
                     Install the MailStub client and start sending test emails from your app.
                   </p>
-                  <div className="ml-11 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg p-4">
-                    <code className="text-xs text-slate-600 dark:text-slate-400 block mb-3">
-                      npm install mailstub-client
-                    </code>
-                    <pre className="text-xs text-slate-600 dark:text-slate-400 overflow-x-auto">
+                  <div className="ml-11 space-y-3">
+                    <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg overflow-hidden">
+                      <div className="flex border-b border-slate-200 dark:border-slate-800">
+                        <button
+                          onClick={() => setPackageManager('npm')}
+                          className={`px-4 py-2 text-xs font-medium transition-colors ${
+                            packageManager === 'npm'
+                              ? 'bg-cyan-50 dark:bg-slate-900 text-cyan-700 dark:text-cyan-400 border-b-2 border-cyan-600 dark:border-cyan-400'
+                              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                          }`}
+                        >
+                          npm
+                        </button>
+                        <button
+                          onClick={() => setPackageManager('pnpm')}
+                          className={`px-4 py-2 text-xs font-medium transition-colors ${
+                            packageManager === 'pnpm'
+                              ? 'bg-cyan-50 dark:bg-slate-900 text-cyan-700 dark:text-cyan-400 border-b-2 border-cyan-600 dark:border-cyan-400'
+                              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                          }`}
+                        >
+                          pnpm
+                        </button>
+                        <button
+                          onClick={() => setPackageManager('yarn')}
+                          className={`px-4 py-2 text-xs font-medium transition-colors ${
+                            packageManager === 'yarn'
+                              ? 'bg-cyan-50 dark:bg-slate-900 text-cyan-700 dark:text-cyan-400 border-b-2 border-cyan-600 dark:border-cyan-400'
+                              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                          }`}
+                        >
+                          yarn
+                        </button>
+                      </div>
+                      <div className="p-4">
+                        <code className="text-xs text-slate-600 dark:text-slate-400 block">
+                          {packageManager === 'npm' && 'npm install mailstub-client'}
+                          {packageManager === 'pnpm' && 'pnpm add mailstub-client'}
+                          {packageManager === 'yarn' && 'yarn add mailstub-client'}
+                        </code>
+                      </div>
+                    </div>
+                    <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg p-4">
+                      <pre className="text-xs text-slate-600 dark:text-slate-400 overflow-x-auto">
 {`import { client } from 'mailstub-client';
 
 await client.send(projectId, {
@@ -116,7 +156,8 @@ await client.send(projectId, {
   subject: 'Welcome!',
   body: '<h1>Hello World</h1>'
 });`}
-                    </pre>
+                      </pre>
+                    </div>
                   </div>
                 </div>
               </div>

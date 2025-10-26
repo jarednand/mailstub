@@ -73,7 +73,14 @@ describe('EmptyState', () => {
       expect(screen.getByText(/Install the MailStub client/)).toBeInTheDocument();
     });
 
-    it('should render the code example with npm install command', () => {
+    it('should render package manager tabs', () => {
+      renderWithContext();
+      expect(screen.getByText('npm')).toBeInTheDocument();
+      expect(screen.getByText('pnpm')).toBeInTheDocument();
+      expect(screen.getByText('yarn')).toBeInTheDocument();
+    });
+
+    it('should render npm install command by default', () => {
       renderWithContext();
       expect(screen.getByText('npm install mailstub-client')).toBeInTheDocument();
     });
@@ -89,6 +96,67 @@ describe('EmptyState', () => {
       renderWithContext();
       expect(screen.getByText(/Need help\? Check out the/)).toBeInTheDocument();
       expect(screen.getByText('documentation')).toBeInTheDocument();
+    });
+  });
+
+  describe('Package Manager Tabs', () => {
+    it('should show npm command by default', () => {
+      renderWithContext();
+      expect(screen.getByText('npm install mailstub-client')).toBeInTheDocument();
+    });
+
+    it('should switch to pnpm command when pnpm tab is clicked', () => {
+      renderWithContext();
+      
+      const pnpmTab = screen.getByText('pnpm');
+      fireEvent.click(pnpmTab);
+      
+      expect(screen.getByText('pnpm add mailstub-client')).toBeInTheDocument();
+      expect(screen.queryByText('npm install mailstub-client')).not.toBeInTheDocument();
+    });
+
+    it('should switch to yarn command when yarn tab is clicked', () => {
+      renderWithContext();
+      
+      const yarnTab = screen.getByText('yarn');
+      fireEvent.click(yarnTab);
+      
+      expect(screen.getByText('yarn add mailstub-client')).toBeInTheDocument();
+      expect(screen.queryByText('npm install mailstub-client')).not.toBeInTheDocument();
+    });
+
+    it('should switch back to npm command when npm tab is clicked after selecting another', () => {
+      renderWithContext();
+      
+      // Switch to pnpm
+      const pnpmTab = screen.getByText('pnpm');
+      fireEvent.click(pnpmTab);
+      expect(screen.getByText('pnpm add mailstub-client')).toBeInTheDocument();
+      
+      // Switch back to npm
+      const npmTab = screen.getByText('npm');
+      fireEvent.click(npmTab);
+      expect(screen.getByText('npm install mailstub-client')).toBeInTheDocument();
+      expect(screen.queryByText('pnpm add mailstub-client')).not.toBeInTheDocument();
+    });
+
+    it('should allow switching between all package managers', () => {
+      renderWithContext();
+      
+      // Start with npm
+      expect(screen.getByText('npm install mailstub-client')).toBeInTheDocument();
+      
+      // Switch to yarn
+      fireEvent.click(screen.getByText('yarn'));
+      expect(screen.getByText('yarn add mailstub-client')).toBeInTheDocument();
+      
+      // Switch to pnpm
+      fireEvent.click(screen.getByText('pnpm'));
+      expect(screen.getByText('pnpm add mailstub-client')).toBeInTheDocument();
+      
+      // Switch back to npm
+      fireEvent.click(screen.getByText('npm'));
+      expect(screen.getByText('npm install mailstub-client')).toBeInTheDocument();
     });
   });
 
@@ -216,6 +284,11 @@ describe('EmptyState', () => {
       expect(screen.queryByTestId('project-form-dialog')).not.toBeInTheDocument();
     });
 
+    it('should initialize with npm as default package manager', () => {
+      renderWithContext();
+      expect(screen.getByText('npm install mailstub-client')).toBeInTheDocument();
+    });
+
     it('should manage dialog open/close state correctly', () => {
       renderWithContext();
       
@@ -233,6 +306,17 @@ describe('EmptyState', () => {
       // Open again
       fireEvent.click(screen.getByTestId('create-project-button'));
       expect(screen.getByTestId('project-form-dialog')).toBeInTheDocument();
+    });
+
+    it('should maintain package manager selection state', () => {
+      renderWithContext();
+      
+      // Switch to yarn
+      fireEvent.click(screen.getByText('yarn'));
+      expect(screen.getByText('yarn add mailstub-client')).toBeInTheDocument();
+      
+      // State should persist
+      expect(screen.getByText('yarn add mailstub-client')).toBeInTheDocument();
     });
   });
 
@@ -275,6 +359,17 @@ describe('EmptyState', () => {
       renderWithContext();
       const button = screen.getByTestId('theme-toggle-button');
       expect(button.tagName).toBe('BUTTON');
+    });
+
+    it('should have accessible package manager tab buttons', () => {
+      renderWithContext();
+      const npmTab = screen.getByText('npm');
+      const pnpmTab = screen.getByText('pnpm');
+      const yarnTab = screen.getByText('yarn');
+      
+      expect(npmTab.tagName).toBe('BUTTON');
+      expect(pnpmTab.tagName).toBe('BUTTON');
+      expect(yarnTab.tagName).toBe('BUTTON');
     });
 
     it('should have link with accessible text', () => {

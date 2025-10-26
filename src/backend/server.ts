@@ -6,7 +6,7 @@ import UsersRouter from '@/routers/UsersRouter';
 import MessagesRouter from '@/routers/MessagesRouter';
 import { initializeDatabase } from '@/db';
 
-console.log('🔍 Starting server initialization...');
+console.log('🚀 Starting MailStub server...');
 
 interface ServerOptions {
   port: number;
@@ -43,11 +43,17 @@ export async function startServer(options: ServerOptions) {
   if (NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../frontend')));
 
-    app.get('/{*splat}', (_, res) =>
+    app.get('/{*splat}', (req, res) => {
+      // If request has file extension, return 404
+      if (path.extname(req.path)) {
+        return res.status(404).send('Not found');
+      }
+
+      // Serve index.html for SPA routes
       res.sendFile(
         path.resolve(__dirname, '../frontend', 'index.html')
       )
-    );
+    });
   }
 
   app.listen(options.port, () => {

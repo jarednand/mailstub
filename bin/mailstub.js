@@ -25,11 +25,6 @@ program
       process.exit(1);
     }
 
-    console.log('🚀 Starting MailStub server...');
-    console.log(`📊 Database: ${path.join(os.homedir(), '.mailstub', 'mailstub.db')}`);
-    console.log(`🌐 Port: ${port}`);
-    console.log('');
-
     // Set NODE_ENV to production when using CLI
     process.env.NODE_ENV = 'production';
 

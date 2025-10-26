@@ -180,47 +180,17 @@ await client.send('${selectedProjectId}', {
                   )}
                 </Button>
               </div>
-              <div className="relative bg-slate-950 dark:bg-slate-900 rounded-lg border border-slate-800 dark:border-slate-700">
-                <div className="overflow-x-auto">
-                  <pre className="p-4 text-sm leading-relaxed">
-                    <code className="text-slate-100 dark:text-slate-300 font-mono">
-                      <span className="text-purple-400">import</span>{' '}
-                      <span className="text-slate-100">{'{ client }'}</span>{' '}
-                      <span className="text-purple-400">from</span>{' '}
-                      <span className="text-green-400">'mailstub-client'</span>
-                      <span className="text-slate-100">;</span>
-                      {'\n\n'}
-                      <span className="text-purple-400">await</span>{' '}
-                      <span className="text-slate-100">client</span>
-                      <span className="text-yellow-400">.</span>
-                      <span className="text-blue-400">send</span>
-                      <span className="text-slate-100">(</span>
-                      <span className="text-green-400">'{selectedProjectId}'</span>
-                      <span className="text-slate-100">, {'{'}</span>
-                      {'\n  '}
-                      <span className="text-cyan-400">sender</span>
-                      <span className="text-slate-100">:</span>{' '}
-                      <span className="text-green-400">'noreply@myapp.local'</span>
-                      <span className="text-slate-100">,</span>
-                      {'\n  '}
-                      <span className="text-cyan-400">receiver</span>
-                      <span className="text-slate-100">:</span>{' '}
-                      <span className="text-green-400">'user@example.com'</span>
-                      <span className="text-slate-100">,</span>
-                      {'\n  '}
-                      <span className="text-cyan-400">subject</span>
-                      <span className="text-slate-100">:</span>{' '}
-                      <span className="text-green-400">'Welcome!'</span>
-                      <span className="text-slate-100">,</span>
-                      {'\n  '}
-                      <span className="text-cyan-400">body</span>
-                      <span className="text-slate-100">:</span>{' '}
-                      <span className="text-green-400">'&lt;h1&gt;Hello World&lt;/h1&gt;'</span>
-                      {'\n'}
-                      <span className="text-slate-100">{'});'}</span>
-                    </code>
-                  </pre>
-                </div>
+              <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg p-4">
+                <pre className="text-xs text-slate-600 dark:text-slate-400 overflow-x-auto" data-testid="code-example">
+{`import { client } from 'mailstub-client';
+
+await client.send('${selectedProjectId}', {
+  sender: 'noreply@myapp.local',
+  receiver: 'user@example.com',
+  subject: 'Welcome!',
+  body: '<h1>Hello World</h1>'
+});`}
+                </pre>
               </div>
             </div>
             <div className="bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-200 dark:border-cyan-800 rounded-lg p-4">

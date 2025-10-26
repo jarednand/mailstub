@@ -206,7 +206,7 @@ describe('EmptyState', () => {
     it('should render documentation link with correct href', () => {
       renderWithContext();
       const docLink = screen.getByText('documentation');
-      expect(docLink).toHaveAttribute('href', '#');
+      expect(docLink).toHaveAttribute('href', 'https://github.com/jarednand/mailstub#readme');
     });
   });
 

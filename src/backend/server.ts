@@ -13,14 +13,16 @@ interface ServerOptions {
 }
 
 export async function startServer(options: ServerOptions) {
-  console.log('🔍 startServer called with options:', options);
-  
   const app = express();
   const routePrefix = '/api';
   const NODE_ENV = process.env.NODE_ENV || 'development';
   const APP_NAME = 'MailStub';
 
-  console.log('🔍 About to initialize database...');
+  if (NODE_ENV !== 'production'){
+    console.log('🔍 startServer called with options:', options);
+  }
+
+  console.log('🔍 Initializing database...');
   
   // Initialize database (creates ~/.mailstub directory and runs migrations)
   try {

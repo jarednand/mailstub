@@ -239,8 +239,8 @@ MIT
 
 ## Support
 
-- 🐛 [Report Issues](https://github.com/yourusername/mailstub/issues)
-- 📖 [Documentation](https://github.com/yourusername/mailstub)
+- 🐛 [Report Issues](https://github.com/jarednand/mailstub/issues)
+- 📖 [Documentation](https://github.com/jarednand/mailstub)
 
 ---
 

@@ -125,7 +125,12 @@ await client.send(projectId, {
             {/* Help text */}
             <p className="text-center text-sm text-slate-500 dark:text-slate-400 mt-6">
               Need help? Check out the{' '}
-              <a href="#" className="text-cyan-600 dark:text-cyan-400 hover:underline">
+              <a
+                href="https://github.com/jarednand/mailstub#readme"
+                className="text-cyan-600 dark:text-cyan-400 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 documentation
               </a>
             </p>

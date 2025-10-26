@@ -34,7 +34,7 @@ export function AppHeader({ searchQuery, onSearchChange }: AppHeaderProps) {
   const codeExample = `import { client } from 'mailstub-client';
 
 await client.send('${selectedProjectId}', {
-  sender: 'noreply@myapp.local',
+  sender: 'noreply@myapp.com',
   receiver: 'user@example.com',
   subject: 'Welcome!',
   body: '<h1>Hello World</h1>'
@@ -154,7 +154,7 @@ await client.send('${selectedProjectId}', {
               Use this project ID to send test emails to MailStub from your application.
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4 mt-4">
+          <div className="space-y-4">
             <div>
               <div className="flex items-center justify-between mb-3">
                 <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
@@ -185,7 +185,7 @@ await client.send('${selectedProjectId}', {
 {`import { client } from 'mailstub-client';
 
 await client.send('${selectedProjectId}', {
-  sender: 'noreply@myapp.local',
+  sender: 'noreply@myapp.com',
   receiver: 'user@example.com',
   subject: 'Welcome!',
   body: '<h1>Hello World</h1>'

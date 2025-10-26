@@ -151,7 +151,7 @@ export function EmptyState() {
 {`import { client } from 'mailstub-client';
 
 await client.send(projectId, {
-  sender: 'noreply@myapp.local',
+  sender: 'noreply@myapp.com',
   receiver: 'user@example.com',
   subject: 'Welcome!',
   body: '<h1>Hello World</h1>'

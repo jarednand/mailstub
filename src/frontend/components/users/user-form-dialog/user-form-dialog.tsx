@@ -23,7 +23,7 @@ import {
 import { useUsers } from '@/hooks/useUsers';
 import { useAppContext } from '@/hooks/useAppContext';
 import { userFormSchema, validateUserUniqueness, type UserFormData } from '@/schemas/user-schema';
-import type { User } from 'mailstub-types';
+import type { User } from '@/types';
 import { toast } from 'sonner';
 import { isAxiosError } from 'axios';
 

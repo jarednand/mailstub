@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import os from 'os';
+import cors from 'cors';
 import ProjectsRouter from '@/routers/ProjectsRouter';
 import UsersRouter from '@/routers/UsersRouter';
 import MessagesRouter from '@/routers/MessagesRouter';
@@ -33,6 +34,7 @@ export async function startServer(options: ServerOptions) {
     throw error;
   }
 
+  app.use(cors());
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
   app.use(routePrefix, ProjectsRouter);

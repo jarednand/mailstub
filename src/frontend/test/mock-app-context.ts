@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
 import type { AppContextType } from '@/contexts/AppContext';
-import type { Project, User, Message } from 'mailstub-types';
+import type { Project, User, Message } from '@/types';
 
 // Helper to generate mock IDs with proper prefixes
 const generateMockId = (prefix: 'p' | 'u' | 'm'): string => {

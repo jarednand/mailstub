@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import type { User } from 'mailstub-types';
+import type { User } from '@/types';
 import type { CreateUserData, UpdateUserData } from '@/hooks/useUsers';
 
 export interface UseUsersReturn {

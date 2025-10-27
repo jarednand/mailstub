@@ -5,10 +5,14 @@ import { AppContext } from '@/contexts/AppContext';
 import { createMockAppContext } from '@/test/mock-app-context';
 
 // Mock clipboard
-Object.assign(navigator, {
-  clipboard: {
-    writeText: vi.fn().mockResolvedValue(undefined),
+const mockWriteText = vi.fn().mockResolvedValue(undefined);
+
+Object.defineProperty(navigator, 'clipboard', {
+  value: {
+    writeText: mockWriteText,
   },
+  writable: true,
+  configurable: true,
 });
 
 describe('AppHeader', () => {
@@ -77,7 +81,7 @@ describe('AppHeader', () => {
       const copyButton = screen.getByTestId('copy-project-id');
       fireEvent.click(copyButton);
       
-      expect(navigator.clipboard.writeText).toHaveBeenCalledWith(projectId);
+      expect(mockWriteText).toHaveBeenCalledWith(projectId);
     });
 
     it('should show check icon briefly after copying', async () => {
@@ -191,8 +195,8 @@ describe('AppHeader', () => {
       const copyCodeButton = screen.getByTestId('copy-code');
       fireEvent.click(copyCodeButton);
       
-      expect(navigator.clipboard.writeText).toHaveBeenCalled();
-      const copiedText = (navigator.clipboard.writeText as any).mock.calls[0][0];
+      expect(mockWriteText).toHaveBeenCalled();
+      const copiedText = mockWriteText.mock.calls[mockWriteText.mock.calls.length - 1][0];
       expect(copiedText).toContain('import { client }');
       expect(copiedText).toContain(projectId);
     });

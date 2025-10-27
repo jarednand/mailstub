@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import type { Message } from 'mailstub-types';
+import type { Message } from '@/types';
 
 export interface UseMessagesReturn {
   messages: Message[];

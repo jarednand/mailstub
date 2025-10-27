@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useAppContext } from './useAppContext';
-import type { Message } from 'mailstub-types';
+import type { Message } from '@/types';
 import axios from 'axios';
 
 export function useMessages() {

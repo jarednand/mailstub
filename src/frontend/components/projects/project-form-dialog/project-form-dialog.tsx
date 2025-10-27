@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/form';
 import { useProjects } from '@/hooks/useProjects';
 import { projectFormSchema, validateProjectUniqueness, type ProjectFormData } from '@/schemas/project-schema';
-import type { Project } from 'mailstub-types';
+import type { Project } from '@/types';
 import { toast } from 'sonner';
 import { isAxiosError } from 'axios';
 

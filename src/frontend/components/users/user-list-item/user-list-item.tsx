@@ -2,7 +2,7 @@ import { memo, useCallback } from 'react';
 import { Edit2, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAppContext } from '@/hooks/useAppContext';
-import type { User } from 'mailstub-types';
+import type { User } from '@/types';
 
 interface UserListItemProps {
   user: User;

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { Project } from 'mailstub-types';
+import type { Project } from '@/types';
 
 export const projectFormSchema = z.object({
   name: z.string().min(1, 'Project name is required'),

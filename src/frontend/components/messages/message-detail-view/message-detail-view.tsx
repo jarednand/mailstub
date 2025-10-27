@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ChevronLeft, Trash2 } from 'lucide-react';
+import { ChevronLeft, Trash2, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DeleteConfirmationDialog } from '@/components/shared/delete-confirmation-dialog';
 import { useAppContext } from '@/hooks/useAppContext';
@@ -7,7 +7,7 @@ import { useMessages } from '@/hooks/useMessages';
 import { toast } from 'sonner';
 
 export function MessageDetailView() {
-  const { messages, selectedMessageId, setSelectedMessageId } = useAppContext();
+  const { selectedUserId, users, messages, selectedMessageId, setSelectedMessageId } = useAppContext();
   const { deleteMessage } = useMessages();
   
   const [deleteDialog, setDeleteDialog] = useState(false);
@@ -17,6 +17,16 @@ export function MessageDetailView() {
     () => messages.find(m => m.id === selectedMessageId),
     [messages, selectedMessageId]
   );
+
+  const currentUser = useMemo(
+    () => users.find(u => u.id === selectedUserId),
+    [users, selectedUserId]
+  );
+
+  const emailHasChanged = useMemo(() => {
+    if (!selectedMessage || !currentUser) return false;
+    return selectedMessage.receiver !== currentUser.email;
+  }, [selectedMessage, currentUser]);
 
   const handleDeleteMessage = async () => {
     if (!selectedMessageId) return;
@@ -91,8 +101,23 @@ export function MessageDetailView() {
                 <div className="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wide mb-1">
                   To
                 </div>
-                <div className="font-medium text-slate-900 dark:text-slate-100">
-                  <span data-testid="message-receiver">{selectedMessage.receiver}</span>
+                <div className="flex items-center gap-2">
+                  <div className="font-medium text-slate-900 dark:text-slate-100">
+                    <span data-testid="message-receiver">{selectedMessage.receiver}</span>
+                  </div>
+                  {emailHasChanged && currentUser && (
+                    <div className="relative group">
+                      <Info 
+                        className="w-4 h-4 text-slate-400 dark:text-slate-500 cursor-help" 
+                        data-testid="email-changed-icon"
+                      />
+                      <div className="absolute left-0 top-6 hidden group-hover:block z-10 w-64">
+                        <div className="bg-slate-900 dark:bg-slate-800 text-white dark:text-slate-100 text-xs rounded-lg px-3 py-2 shadow-lg border border-slate-700 dark:border-slate-600">
+                          This user's email has been updated to <span className="font-semibold">{currentUser.email}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

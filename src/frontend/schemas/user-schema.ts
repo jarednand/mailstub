@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { User, Project } from 'mailstub-types';
+import type { User, Project } from '@/types';
 
 export const userFormSchema = z.object({
   email: z

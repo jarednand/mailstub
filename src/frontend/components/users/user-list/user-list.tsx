@@ -6,7 +6,7 @@ import { UserFormDialog } from '@/components/users/user-form-dialog';
 import { DeleteConfirmationDialog } from '@/components/shared/delete-confirmation-dialog';
 import { useAppContext } from '@/hooks/useAppContext';
 import { useUsers } from '@/hooks/useUsers';
-import type { User } from 'mailstub-types';
+import type { User } from '@/types';
 import { toast } from 'sonner';
 
 export function UserList() {

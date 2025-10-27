@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import type { Project } from 'mailstub-types';
+import type { Project } from '@/types';
 import type { CreateProjectData, UpdateProjectData } from '@/hooks/useProjects';
 
 export interface UseProjectsReturn {

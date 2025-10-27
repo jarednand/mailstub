@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import type { Project, User, Message } from 'mailstub-types';
+import type { Project, User, Message } from '@/types';
 
 export type AppContextType = {
   projects: Project[];

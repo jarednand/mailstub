@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import type { Project, User, Message } from 'mailstub-types';
+import type { Project, User, Message } from '@/types';
 import { AppContext } from '@/contexts/AppContext';
 import axios from 'axios';
 import { toast } from 'sonner';

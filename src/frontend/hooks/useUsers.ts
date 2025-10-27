@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useAppContext } from './useAppContext';
-import type { User, Project } from 'mailstub-types';
+import type { User, Project } from '@/types';
 import axios from 'axios';
 
 export interface CreateUserData {

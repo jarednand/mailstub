@@ -19,10 +19,6 @@ export async function startServer(options: ServerOptions) {
   const NODE_ENV = process.env.NODE_ENV || 'development';
   const APP_NAME = 'MailStub';
 
-  if (NODE_ENV !== 'production'){
-    console.log('🔍 startServer called with options:', options);
-  }
-
   console.log('🔍 Initializing database...');
   
   // Initialize database (creates ~/.mailstub directory and runs migrations)
@@ -59,8 +55,10 @@ export async function startServer(options: ServerOptions) {
   }
 
   app.listen(options.port, () => {
+    const frontendPort = NODE_ENV === 'production' ? options.port : 3000;
+
     console.log(`✅ ${APP_NAME} server running at http://localhost:${options.port}`);
-    console.log(`📧 Open http://localhost:${options.port} to view your emails`);
+    console.log(`📧 Open http://localhost:${frontendPort} to view your emails`);
     console.log(`📊 Database: ${path.join(os.homedir(), '.mailstub', 'mailstub.db')}`);
     console.log('');
     console.log('Press Ctrl+C to stop the server');

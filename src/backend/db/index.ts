@@ -26,12 +26,6 @@ export const db = drizzle(client, { schema });
 export async function initializeDatabase() {
   try {
     const migrationsFolder = path.join(__dirname, '../../../drizzle');
-    
-    if (process.env.NODE_ENV !== 'production'){
-      console.log('🔍 Looking for migrations at:', migrationsFolder);
-      console.log('🔍 Does it exist?', fs.existsSync(migrationsFolder));
-    }
-    
     await migrate(db, { migrationsFolder });
   } catch (error) {
     throw error;

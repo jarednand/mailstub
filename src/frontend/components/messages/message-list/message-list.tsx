@@ -47,15 +47,21 @@ export function MessageList({ searchQuery }: MessageListProps) {
   );
 
   const filteredMessages = useMemo(() => {
-    if (!searchQuery) return userMessages;
-    
-    const query = searchQuery.toLowerCase();
-    return userMessages.filter(
-      m =>
-        m.subject.toLowerCase().includes(query) ||
-        m.body.toLowerCase().includes(query) ||
-        m.sender.toLowerCase().includes(query)
-    );
+    return userMessages
+      .filter(m => {
+        if (!searchQuery) return true;
+
+        const query = searchQuery.toLowerCase();
+        
+        return (
+          m.subject.toLowerCase().includes(query) ||
+          m.body.toLowerCase().includes(query) ||
+          m.sender.toLowerCase().includes(query)
+        );
+      })
+      .sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
   }, [userMessages, searchQuery]);
 
   const handleSelectMessage = useCallback(

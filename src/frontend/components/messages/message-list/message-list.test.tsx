@@ -159,6 +159,136 @@ describe('MessageList', () => {
     });
   });
 
+  describe('Message Sorting', () => {
+    it('should display messages sorted by createdAt in descending order (newest first)', () => {
+      const user = createMockUser({ id: 'u_1', projectId: 'p_1' });
+      const project = createMockProject({ id: 'p_1' });
+      const message1 = createMockMessage({ 
+        id: 'm_1', 
+        userId: 'u_1', 
+        projectId: 'p_1', 
+        subject: 'Oldest Message',
+        createdAt: '2024-01-01T10:00:00Z'
+      });
+      const message2 = createMockMessage({ 
+        id: 'm_2', 
+        userId: 'u_1', 
+        projectId: 'p_1', 
+        subject: 'Middle Message',
+        createdAt: '2024-01-02T10:00:00Z'
+      });
+      const message3 = createMockMessage({ 
+        id: 'm_3', 
+        userId: 'u_1', 
+        projectId: 'p_1', 
+        subject: 'Newest Message',
+        createdAt: '2024-01-03T10:00:00Z'
+      });
+      
+      renderComponent('', {
+        users: [user],
+        projects: [project],
+        messages: [message1, message2, message3],
+        selectedUserId: user.id,
+        selectedProjectId: project.id,
+      });
+      
+      const messageItems = screen.getAllByTestId(/^message-item-/);
+      expect(messageItems).toHaveLength(3);
+      
+      // Verify order: newest (m_3) should be first
+      expect(messageItems[0]).toHaveAttribute('data-testid', 'message-item-m_3');
+      expect(messageItems[1]).toHaveAttribute('data-testid', 'message-item-m_2');
+      expect(messageItems[2]).toHaveAttribute('data-testid', 'message-item-m_1');
+    });
+
+    it('should maintain sort order when messages are added in random order', () => {
+      const user = createMockUser({ id: 'u_1', projectId: 'p_1' });
+      const project = createMockProject({ id: 'p_1' });
+      const message1 = createMockMessage({ 
+        id: 'm_1', 
+        userId: 'u_1', 
+        projectId: 'p_1', 
+        createdAt: '2024-01-02T10:00:00Z'
+      });
+      const message2 = createMockMessage({ 
+        id: 'm_2', 
+        userId: 'u_1', 
+        projectId: 'p_1', 
+        createdAt: '2024-01-01T10:00:00Z'
+      });
+      const message3 = createMockMessage({ 
+        id: 'm_3', 
+        userId: 'u_1', 
+        projectId: 'p_1', 
+        createdAt: '2024-01-03T10:00:00Z'
+      });
+      
+      // Messages provided in random order
+      renderComponent('', {
+        users: [user],
+        projects: [project],
+        messages: [message2, message3, message1],
+        selectedUserId: user.id,
+        selectedProjectId: project.id,
+      });
+      
+      const messageItems = screen.getAllByTestId(/^message-item-/);
+      
+      // Should still be sorted newest first
+      expect(messageItems[0]).toHaveAttribute('data-testid', 'message-item-m_3');
+      expect(messageItems[1]).toHaveAttribute('data-testid', 'message-item-m_1');
+      expect(messageItems[2]).toHaveAttribute('data-testid', 'message-item-m_2');
+    });
+
+    it('should sort filtered messages by createdAt', () => {
+      const user = createMockUser({ id: 'u_1', projectId: 'p_1' });
+      const project = createMockProject({ id: 'p_1' });
+      const message1 = createMockMessage({ 
+        id: 'm_1', 
+        userId: 'u_1', 
+        projectId: 'p_1', 
+        subject: 'Urgent: Action Required',
+        body: 'Please take action',
+        sender: 'admin@example.com',
+        createdAt: '2024-01-01T10:00:00Z'
+      });
+      const message2 = createMockMessage({ 
+        id: 'm_2', 
+        userId: 'u_1', 
+        projectId: 'p_1', 
+        subject: 'Regular Newsletter',
+        body: 'Monthly updates',
+        sender: 'newsletter@example.com',
+        createdAt: '2024-01-02T10:00:00Z'
+      });
+      const message3 = createMockMessage({ 
+        id: 'm_3', 
+        userId: 'u_1', 
+        projectId: 'p_1', 
+        subject: 'Urgent: System Alert',
+        body: 'System requires attention',
+        sender: 'alerts@example.com',
+        createdAt: '2024-01-03T10:00:00Z'
+      });
+      
+      renderComponent('Urgent', {
+        users: [user],
+        projects: [project],
+        messages: [message1, message2, message3],
+        selectedUserId: user.id,
+        selectedProjectId: project.id,
+      });
+      
+      const messageItems = screen.getAllByTestId(/^message-item-/);
+      expect(messageItems).toHaveLength(2);
+      
+      // Filtered messages should also be sorted newest first
+      expect(messageItems[0]).toHaveAttribute('data-testid', 'message-item-m_3');
+      expect(messageItems[1]).toHaveAttribute('data-testid', 'message-item-m_1');
+    });
+  });
+
   describe('Search Functionality', () => {
     it('should filter messages by subject', () => {
       const user = createMockUser({ id: 'u_1', projectId: 'p_1' });

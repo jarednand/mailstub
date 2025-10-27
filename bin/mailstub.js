@@ -7,7 +7,7 @@ const program = new Command();
 program
   .name('mailstub')
   .description('MailStub - Development server for email testing')
-  .version('0.1.0');
+  .version('0.1.1');
 
 // Add the start command
 program

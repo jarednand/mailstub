@@ -58,7 +58,7 @@ export const MessageListItem = memo(function MessageListItem({
         isSelected
           ? 'bg-cyan-50 dark:bg-cyan-900/40'
           : !message.read
-          ? 'bg-cyan-50/30 dark:bg-cyan-950/10'
+          ? 'bg-cyan-50/30 dark:bg-cyan-900/20'
           : ''
       }`}
       onClick={handleClick}

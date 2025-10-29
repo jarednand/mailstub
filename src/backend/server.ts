@@ -54,21 +54,40 @@ export async function startServer(options: ServerOptions) {
     });
   }
 
-  app.listen(options.port, () => {
-    const frontendPort = NODE_ENV === 'production' ? options.port : 3000;
+  await new Promise<void>((resolve, reject) => {
+    const server = app.listen(options.port, 'localhost');
 
-    console.log(`✅ ${APP_NAME} server running at http://localhost:${options.port}`);
-    console.log(`📧 Open http://localhost:${frontendPort} to view your emails`);
-    console.log(`📊 Database: ${path.join(os.homedir(), '.mailstub', 'mailstub.db')}`);
-    console.log('');
-    console.log('Press Ctrl+C to stop the server');
+    server.on('error', (error: NodeJS.ErrnoException) => {
+      if (error.code === 'EADDRINUSE') {
+        reject(new Error(`Port ${options.port} is already in use`));
+      } else {
+        reject(error);
+      }
+    });
+
+    server.on('listening', () => {
+      console.log(`✅ ${APP_NAME} server running at http://localhost:${options.port}`);
+      console.log(`📊 Database: ${path.join(os.homedir(), '.mailstub', 'mailstub.db')}`);
+      
+      if (NODE_ENV === 'production') {
+        console.log(`📧 Open http://localhost:${options.port} to view your emails`);
+      }
+      
+      console.log('');
+      console.log('Press Ctrl+C to stop the server');
+      resolve();
+    });
   });
 }
 
 // For development (npm run dev)
 if (require.main === module) {
   console.log('🔍 Running in development mode');
+  
   startServer({
     port: parseInt(process.env.PORT || '3001', 10)
+  }).catch((error) => {
+    console.error(`❌ Error: ${error.message}`);
+    process.exit(1);
   });
 }

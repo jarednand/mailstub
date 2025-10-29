@@ -10,7 +10,7 @@
   "scripts": {
     "dev:frontend": "vite --config vite.config.ts",
     "dev:backend": "tsx --tsconfig tsconfig.backend.json -r tsconfig-paths/register src/backend/server.ts",
-    "dev": "pnpm dev:frontend & pnpm dev:backend",
+    "dev": "concurrently \"pnpm dev:frontend\" \"pnpm dev:backend\" --kill-others-on-fail",
     "build:frontend": "vite build",
     "build:backend": "echo 'Building backend...' && tsc -p tsconfig.build.json && echo '✓ Compiled' && tsc-alias -p tsconfig.build.json && echo '✓ Aliases resolved'",
     "build": "pnpm build:frontend && pnpm build:backend",
@@ -72,6 +72,7 @@
     "axios": "^1.12.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "concurrently": "^9.2.1",
     "drizzle-kit": "^0.31.5",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",

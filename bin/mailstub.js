@@ -9,39 +9,31 @@ program
   .description('MailStub - Development server for email testing')
   .version('0.1.1');
 
-// Add the start command
 program
   .command('start')
   .description('Start the MailStub development server')
   .option('-p, --port <number>', 'port number for the server', '8000')
-  .action((options) => {
+  .action(async (options) => {
     const port = parseInt(options.port, 10);
 
-    // Validate port
     if (isNaN(port) || port < 1 || port > 65535) {
       console.error('❌ Error: Port must be a number between 1 and 65535');
       process.exit(1);
     }
 
-    // Set NODE_ENV to production when using CLI
     process.env.NODE_ENV = 'production';
 
-    // Start the server - path is relative to ROOT
     try {
       const { startServer } = require('../dist/backend/server');
-      startServer({ port });
+      await startServer({ port });
     } catch (error) {
-      console.error('❌ Failed to start server:', error.message);
-      console.error('');
-      console.error('💡 Make sure you have built the project with: pnpm build');
+      console.error(`❌ Error: ${error.message}`);
       process.exit(1);
     }
   });
 
-// Show help if no command provided or if invalid command
 program.parse(process.argv);
 
-// If no command was provided, show help
 if (!process.argv.slice(2).length) {
   program.outputHelp();
 }
